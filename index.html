@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/components.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   </head>
   <body>
     <!-- Navigation -->
@@ -230,7 +232,7 @@
               </div>
               <div>
                 <strong>Email</strong>
-                <p>hello@davidfortin.com</p>
+                <p>davidfortin04048@gmail.com</p>
               </div>
             </div>
             <div class="contact-item">
@@ -241,7 +243,7 @@
               </div>
               <div>
                 <strong>Teléfono</strong>
-                <p>+34 600 123 456</p>
+                <p>+504 8882-1888</p>
               </div>
             </div>
             <div class="contact-item">
@@ -253,7 +255,7 @@
               </div>
               <div>
                 <strong>Ubicación</strong>
-                <p>Madrid, España</p>
+                <p>Tegucigalpa, Honduras</p>
               </div>
             </div>
             <div class="social-links">
@@ -266,33 +268,29 @@
             </div>
           </div>
           
-          <form class="contact-form" id="contactForm" action="https://formspree.io/f/avusahn@gmail.com" method="POST">
+          <form class="contact-form" id="contactForm">
             <div class="form-group">
               <label for="name">Nombre</label>
-              <input type="text" id="name" name="name" required>
+              <input type="text" id="name" name="from_name" required>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" required>
+              <input type="email" id="email" name="from_email" required>
             </div>
             <div class="form-group">
               <label for="subject">Asunto</label>
               <select id="subject" name="subject" required>
                 <option value="">Selecciona un asunto</option>
-                <option value="tv">Presentación TV</option>
-                <option value="modeling">Modelaje</option>
-                <option value="architecture">Arquitectura</option>
-                <option value="other">Otro</option>
+                <option value="Presentación TV">Presentación TV</option>
+                <option value="Modelaje">Modelaje</option>
+                <option value="Arquitectura">Arquitectura</option>
+                <option value="Otro">Otro</option>
               </select>
             </div>
             <div class="form-group">
               <label for="message">Mensaje</label>
               <textarea id="message" name="message" rows="5" required></textarea>
             </div>
-            <!-- Campos ocultos para Formspree -->
-            <input type="hidden" name="_subject" value="Nuevo mensaje desde davidfortin.com">
-            <input type="hidden" name="_replyto" value="avusahn@gmail.com">
-            <input type="hidden" name="_cc" value="avusahn@gmail.com">
             <button type="submit" class="btn-primary">Enviar Mensaje</button>
           </form>
         </div>

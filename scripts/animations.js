@@ -324,7 +324,7 @@ class LoadingAnimations {
         loader.className = 'page-loader';
         loader.innerHTML = `
             <div class="loader-content">
-                <div class="loader-logo">AV</div>
+                <div class="loader-logo">DF</div>
                 <div class="loader-progress"></div>
             </div>
         `;

@@ -78,6 +78,7 @@
   border-radius: 6px;
   margin-bottom: var(--spacing-lg);
   border: 1px solid #c3e6cb;
+  animation: slideInDown 0.3s ease-out;
 }
 
 .form-error {
@@ -87,6 +88,7 @@
   border-radius: 6px;
   margin-bottom: var(--spacing-lg);
   border: 1px solid #f5c6cb;
+  animation: slideInDown 0.3s ease-out;
 }
 
 .form-info {
@@ -96,6 +98,18 @@
   border-radius: 6px;
   margin-bottom: var(--spacing-lg);
   border: 1px solid #bee5eb;
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Loading spinner para botones */
@@ -121,6 +135,73 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Página de agradecimiento */
+.thank-you {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, var(--background-white) 0%, var(--secondary-color) 100%);
+  padding-top: 80px;
+}
+
+.thank-you-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.thank-you-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--spacing-lg);
+  color: #28a745;
+}
+
+.thank-you-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.thank-you h1 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.thank-you-subtitle {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  font-weight: 500;
+  margin-bottom: var(--spacing-lg);
+}
+
+.thank-you-description {
+  margin-bottom: var(--spacing-xl);
+}
+
+.thank-you-description p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: var(--spacing-md);
+}
+
+.thank-you-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.social-links-thank-you {
+  margin-top: var(--spacing-xl);
+}
+
+.social-links-thank-you h4 {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
 }
 
 /* Tooltip personalizado */
@@ -239,6 +320,20 @@
   .btn-primary:hover,
   .btn-secondary:hover {
     transform: none;
+  }
+}
+
+/* Responsive para página de agradecimiento */
+@media (max-width: 768px) {
+  .thank-you-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    max-width: 250px;
   }
 }
 

@@ -5,8 +5,16 @@ let isMenuOpen = false;
 let currentFilter = 'all';
 let scrollPosition = 0;
 
+// Configuración de EmailJS
+const EMAILJS_CONFIG = {
+    serviceId: 'service_davidfortin',
+    templateId: 'template_contact',
+    publicKey: 'YOUR_PUBLIC_KEY_HERE' // Se debe configurar
+};
+
 // Inicialización cuando el DOM está listo
 document.addEventListener('DOMContentLoaded', function() {
+    initializeEmailJS();
     initializeNavigation();
     initializePortfolioFilters();
     initializeContactForm();
@@ -14,6 +22,18 @@ document.addEventListener('DOMContentLoaded', function() {
     createScrollToTopButton();
     initializeAnimationsOnScroll();
 });
+
+// === INICIALIZACIÓN DE EMAILJS ===
+function initializeEmailJS() {
+    // Inicializar EmailJS con clave pública temporal para demostración
+    // En producción, debes configurar tu propia cuenta de EmailJS
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init("YOUR_PUBLIC_KEY_HERE");
+        console.log('EmailJS inicializado');
+    } else {
+        console.warn('EmailJS no está disponible');
+    }
+}
 
 // === NAVEGACIÓN ===
 function initializeNavigation() {
@@ -154,21 +174,59 @@ function initializeContactForm() {
     const form = document.getElementById('contactForm');
     
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
             // Validar antes de enviar
             if (!validateForm(this)) {
-                e.preventDefault();
                 showFormMessage('Por favor, corrige los errores antes de enviar.', 'error');
                 return;
             }
             
-            // Si la validación pasa, mostrar mensaje de confirmación
             const submitButton = form.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            // Mostrar estado de carga
             submitButton.textContent = 'Enviando...';
             submitButton.classList.add('btn-loading');
             submitButton.disabled = true;
             
-            showFormMessage('Enviando mensaje a avusahn@gmail.com...', 'info');
+            try {
+                // Obtener datos del formulario
+                const formData = new FormData(form);
+                
+                // Preparar datos para EmailJS
+                const templateParams = {
+                    from_name: formData.get('from_name'),
+                    from_email: formData.get('from_email'),
+                    subject: formData.get('subject'),
+                    message: formData.get('message'),
+                    to_email: 'davidfortin04048@gmail.com'
+                };
+                
+                // Enviar email usando EmailJS
+                await sendEmailWithEmailJS(templateParams);
+                
+                // Mostrar mensaje de éxito
+                showFormMessage('¡Mensaje enviado correctamente a davidfortin04048@gmail.com! Te responderé pronto.', 'success');
+                
+                // Resetear formulario
+                form.reset();
+                
+                // Opcional: redirigir a página de agradecimiento después de 3 segundos
+                setTimeout(() => {
+                    window.location.href = 'gracias.html';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error al enviar el mensaje:', error);
+                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente a davidfortin04048@gmail.com', 'error');
+            } finally {
+                // Restaurar botón
+                submitButton.textContent = originalText;
+                submitButton.classList.remove('btn-loading');
+                submitButton.disabled = false;
+            }
         });
         
         // Validación en tiempo real
@@ -182,6 +240,51 @@ function initializeContactForm() {
                 clearFieldError(this);
             });
         });
+    }
+}
+
+// Función para enviar email con EmailJS
+async function sendEmailWithEmailJS(templateParams) {
+    // Para demostración, usaremos un servicio de email alternativo
+    // En producción, configura tu cuenta de EmailJS
+    
+    try {
+        // Simulación de envío exitoso para demostración
+        // En producción, descomenta la línea siguiente y configura EmailJS:
+        // const response = await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, templateParams, EMAILJS_CONFIG.publicKey);
+        
+        // Simular delay de red
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Para propósitos de demostración, registrar los datos que se enviarían
+        console.log('Datos del email que se enviaría:', templateParams);
+        
+        // Envío real usando fetch a un servicio de email gratuito (Formspree alternativo)
+        const response = await fetch('https://formsubmit.co/davidfortin04048@gmail.com', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: templateParams.from_name,
+                email: templateParams.from_email,
+                subject: `Contacto desde davidfortin.com: ${templateParams.subject}`,
+                message: templateParams.message,
+                _captcha: false,
+                _template: 'table'
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return { success: true };
+        
+    } catch (error) {
+        console.error('Error en sendEmailWithEmailJS:', error);
+        throw error;
     }
 }
 
@@ -265,12 +368,12 @@ function showFormMessage(message, type) {
     const form = document.getElementById('contactForm');
     form.insertBefore(messageDiv, form.firstChild);
     
-    // Auto-remover después de 5 segundos (excepto para mensajes de info)
-    if (type !== 'info') {
-        setTimeout(() => {
+    // Auto-remover después de 8 segundos
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
             messageDiv.remove();
-        }, 5000);
-    }
+        }
+    }, 8000);
 }
 
 // === EFECTOS DE SCROLL ===
