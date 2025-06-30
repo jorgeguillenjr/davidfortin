@@ -409,6 +409,34 @@ section {
   box-shadow: var(--shadow-medium);
 }
 
+/* Estilos para tarjetas clickeables */
+.clickable-card {
+  cursor: pointer;
+  position: relative;
+}
+
+.clickable-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(212, 175, 122, 0.05) 0%, rgba(212, 175, 122, 0.1) 100%);
+  opacity: 0;
+  transition: var(--transition-normal);
+  pointer-events: none;
+}
+
+.clickable-card:hover::before {
+  opacity: 1;
+}
+
+.clickable-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-heavy);
+}
+
 /* Nuevos estilos para iconos SVG más sobrios */
 .card-icon-container {
   margin-bottom: var(--spacing-lg);
@@ -437,6 +465,7 @@ section {
 .card-features {
   list-style: none;
   margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
 }
 
 .card-features li {
@@ -452,6 +481,25 @@ section {
   left: 0;
   color: var(--accent-color);
   font-weight: bold;
+}
+
+/* Call to Action en las tarjetas */
+.card-cta {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-light);
+}
+
+.cta-text {
+  color: var(--accent-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: var(--transition-normal);
+}
+
+.clickable-card:hover .cta-text {
+  color: var(--primary-color);
+  transform: translateX(5px);
 }
 
 /* Portfolio Section */

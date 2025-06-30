@@ -131,6 +131,29 @@ function updateActiveNavLinkOnScroll() {
     });
 }
 
+// === NUEVA FUNCIÓN PARA NAVEGAR AL PORTFOLIO CON FILTRO ===
+function goToPortfolioFilter(filter) {
+    // Primero navegar a la sección portfolio
+    scrollToSection('portfolio');
+    
+    // Después de un pequeño delay, aplicar el filtro
+    setTimeout(() => {
+        // Actualizar botones de filtro
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        
+        const targetButton = document.querySelector(`[data-filter="${filter}"]`);
+        if (targetButton) {
+            targetButton.classList.add('active');
+        }
+        
+        // Aplicar filtro
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        filterPortfolioItems(filter, portfolioItems);
+        currentFilter = filter;
+    }, 800); // Delay para que termine el scroll
+}
+
 // === PORTFOLIO ===
 function initializePortfolioFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -467,8 +490,9 @@ function debounce(func, wait, immediate) {
     };
 }
 
-// Función global para scroll (usada en HTML)
+// Funciones globales para uso en HTML
 window.scrollToSection = scrollToSection;
+window.goToPortfolioFilter = goToPortfolioFilter;
 
 // Manejo de errores global
 window.addEventListener('error', function(e) {
