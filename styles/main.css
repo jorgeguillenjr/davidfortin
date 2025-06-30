@@ -559,7 +559,7 @@ section {
 .portfolio-image {
   position: relative;
   overflow: hidden;
-  height: 350px; /* Aumentado de 250px a 350px para mostrar las imágenes completas */
+  height: 450px; /* Aumentado a 450px como solicitado */
 }
 
 .portfolio-image .image-placeholder {
@@ -571,9 +571,10 @@ section {
 .portfolio-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  object-fit: cover; /* Mantiene las proporciones y llena el contenedor */
+  object-position: center; /* Centra la imagen */
   transition: var(--transition-normal);
+  border-radius: 0;
 }
 
 .portfolio-item:hover .portfolio-img {
@@ -830,7 +831,7 @@ section {
   }
   
   .portfolio-image {
-    height: 300px; /* Ajustado para móvil */
+    height: 350px; /* Ajustado para tablet/móvil */
   }
   
   .contact-container {
@@ -876,6 +877,6 @@ section {
   }
   
   .portfolio-image {
-    height: 250px; /* Ajustado para pantallas muy pequeñas */
+    height: 300px; /* Ajustado para pantallas muy pequeñas */
   }
 }
