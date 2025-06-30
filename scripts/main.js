@@ -218,28 +218,23 @@ function initializeContactForm() {
                 // Obtener datos del formulario
                 const formData = new FormData(form);
                 
-                // Preparar datos para EmailJS
-                const templateParams = {
-                    from_name: formData.get('from_name'),
-                    from_email: formData.get('from_email'),
-                    subject: formData.get('subject'),
-                    message: formData.get('message'),
-                    to_email: 'davidfortin04048@gmail.com'
-                };
+                // Enviar usando FormSubmit (servicio real)
+                const success = await sendEmailWithFormSubmit(formData);
                 
-                // Enviar email usando EmailJS
-                await sendEmailWithEmailJS(templateParams);
-                
-                // Mostrar mensaje de éxito
-                showFormMessage('¡Mensaje enviado correctamente a davidfortin04048@gmail.com! Te responderé pronto.', 'success');
-                
-                // Resetear formulario
-                form.reset();
-                
-                // Opcional: redirigir a página de agradecimiento después de 3 segundos
-                setTimeout(() => {
-                    window.location.href = 'gracias.html';
-                }, 3000);
+                if (success) {
+                    // Mostrar mensaje de éxito brevemente
+                    showFormMessage('¡Mensaje enviado correctamente! Redirigiendo...', 'success');
+                    
+                    // Resetear formulario
+                    form.reset();
+                    
+                    // Redirigir a página de agradecimiento después de 2 segundos
+                    setTimeout(() => {
+                        window.location.href = 'gracias.html';
+                    }, 2000);
+                } else {
+                    throw new Error('Error en el envío');
+                }
                 
             } catch (error) {
                 console.error('Error al enviar el mensaje:', error);
@@ -266,48 +261,44 @@ function initializeContactForm() {
     }
 }
 
-// Función para enviar email con EmailJS
-async function sendEmailWithEmailJS(templateParams) {
-    // Para demostración, usaremos un servicio de email alternativo
-    // En producción, configura tu cuenta de EmailJS
-    
+// Función para enviar email con FormSubmit
+async function sendEmailWithFormSubmit(formData) {
     try {
-        // Simulación de envío exitoso para demostración
-        // En producción, descomenta la línea siguiente y configura EmailJS:
-        // const response = await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, templateParams, EMAILJS_CONFIG.publicKey);
+        // Preparar datos para FormSubmit
+        const submitData = {
+            name: formData.get('from_name'),
+            email: formData.get('from_email'),
+            subject: `Contacto desde davidfortin.com: ${formData.get('subject')}`,
+            message: formData.get('message'),
+            _next: window.location.origin + '/gracias.html', // Página de redirección
+            _captcha: false,
+            _template: 'table'
+        };
         
-        // Simular delay de red
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Crear formulario temporal para envío
+        const tempForm = document.createElement('form');
+        tempForm.method = 'POST';
+        tempForm.action = 'https://formsubmit.co/davidfortin04048@gmail.com';
+        tempForm.style.display = 'none';
         
-        // Para propósitos de demostración, registrar los datos que se enviarían
-        console.log('Datos del email que se enviaría:', templateParams);
-        
-        // Envío real usando fetch a un servicio de email gratuito (Formspree alternativo)
-        const response = await fetch('https://formsubmit.co/davidfortin04048@gmail.com', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                name: templateParams.from_name,
-                email: templateParams.from_email,
-                subject: `Contacto desde davidfortin.com: ${templateParams.subject}`,
-                message: templateParams.message,
-                _captcha: false,
-                _template: 'table'
-            })
+        // Agregar campos al formulario
+        Object.keys(submitData).forEach(key => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = submitData[key];
+            tempForm.appendChild(input);
         });
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // Enviar formulario
+        document.body.appendChild(tempForm);
+        tempForm.submit();
         
-        return { success: true };
+        return true;
         
     } catch (error) {
-        console.error('Error en sendEmailWithEmailJS:', error);
-        throw error;
+        console.error('Error en sendEmailWithFormSubmit:', error);
+        return false;
     }
 }
 
