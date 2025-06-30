@@ -559,11 +559,25 @@ section {
 .portfolio-image {
   position: relative;
   overflow: hidden;
+  height: 250px;
 }
 
 .portfolio-image .image-placeholder {
-  height: 250px;
+  height: 100%;
   border-radius: 0;
+}
+
+/* Estilos para imágenes reales del portfolio */
+.portfolio-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: var(--transition-normal);
+}
+
+.portfolio-item:hover .portfolio-img {
+  transform: scale(1.05);
 }
 
 .portfolio-content {
