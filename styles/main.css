@@ -33,6 +33,7 @@
   --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.1);
   --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --shadow-floating: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Reset básico */
@@ -322,24 +323,34 @@ section {
   align-items: center;
 }
 
-/* Hero Photo Styles - Ajustado para mostrar la imagen completa */
+/* Hero Photo Styles - Efecto flotante sin borde */
 .hero-photo {
   width: 100%;
   max-width: 450px;
   height: auto;
   aspect-ratio: 3/4;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  border-radius: 12px;
-  box-shadow: var(--shadow-medium);
+  border-radius: 20px;
+  box-shadow: var(--shadow-floating);
   transition: var(--transition-slow);
-  background-color: var(--secondary-color);
-  padding: 10px;
+  transform: translateY(0);
+  animation: float 6s ease-in-out infinite;
 }
 
 .hero-photo:hover {
-  transform: scale(1.02);
-  box-shadow: var(--shadow-heavy);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Animación de flotación sutil */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* Placeholder para imágenes */
