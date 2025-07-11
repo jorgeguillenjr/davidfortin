@@ -231,14 +231,14 @@ function initializeContactForm() {
                     // Redirigir a página de agradecimiento después de 2 segundos
                     setTimeout(() => {
                         window.location.href = 'gracias.html';
-                    }, 2000);
+                    }, 1500);
                 } else {
                     throw new Error('Error en el envío');
                 }
                 
             } catch (error) {
                 console.error('Error al enviar el mensaje:', error);
-                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente a davidfortin04048@gmail.com', 'error');
+                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente por WhatsApp: +504 8882-1888', 'error');
             } finally {
                 // Restaurar botón
                 submitButton.textContent = originalText;
