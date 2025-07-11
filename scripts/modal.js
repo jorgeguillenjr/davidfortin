@@ -540,36 +540,34 @@ class RadioModal {
 
     generateAudioPlayer(item, index) {
         return `
-            <div class="audio-placeholder">
-                <div class="audio-player">
-                    <div class="audio-title">${item.audioNote}</div>
-                    <div class="audio-controls">
-                        <button class="play-button" data-audio-index="${index}" onclick="radioModal.toggleAudio(${index})">
-                            <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5,3 19,12 5,21"/>
-                            </svg>
-                            <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="6" y="4" width="4" height="16"/>
-                                <rect x="14" y="4" width="4" height="16"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="audio-progress">
-                        <div class="progress-bar" onclick="radioModal.seekAudio(event, ${index})">
-                            <div class="progress-fill" id="progress-${index}"></div>
-                        </div>
-                        <div class="audio-time">
-                            <span id="current-time-${index}">0:00</span>
-                            <span id="duration-${index}">0:00</span>
-                        </div>
-                    </div>
-                    <div class="volume-control">
-                        <svg class="volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/>
-                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <div class="audio-player">
+                <div class="audio-title">${item.audioNote}</div>
+                <div class="audio-controls">
+                    <button class="play-button" data-audio-index="${index}" onclick="radioModal.toggleAudio(${index})">
+                        <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5,3 19,12 5,21"/>
                         </svg>
-                        <input type="range" class="volume-slider" min="0" max="100" value="70" onchange="radioModal.setVolume(${index}, this.value)">
+                        <svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="6" y="4" width="4" height="16"/>
+                            <rect x="14" y="4" width="4" height="16"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="audio-progress">
+                    <div class="progress-bar" onclick="radioModal.seekAudio(event, ${index})">
+                        <div class="progress-fill" id="progress-${index}"></div>
                     </div>
+                    <div class="audio-time">
+                        <span id="current-time-${index}">0:00</span>
+                        <span id="duration-${index}">0:00</span>
+                    </div>
+                </div>
+                <div class="volume-control">
+                    <svg class="volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                    </svg>
+                    <input type="range" class="volume-slider" min="0" max="100" value="70" onchange="radioModal.setVolume(${index}, this.value)">
                 </div>
             </div>
         `;
