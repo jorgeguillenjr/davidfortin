@@ -338,53 +338,6 @@ function requestMoreInfo(videoTitle) {
         }, 1000);
     }
 }
-            e.stopPropagation();
-        });
-    }
-
-    openModal() {
-        this.modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        this.isOpen = true;
-
-        // Focus en el botón de cerrar para accesibilidad
-        setTimeout(() => {
-            this.modal.querySelector('.modal-close').focus();
-        }, 300);
-    }
-
-    closeModal() {
-        this.modal.classList.remove('active');
-        document.body.style.overflow = '';
-        this.isOpen = false;
-    }
-}
-
-// Funciones auxiliares para los botones de video
-function showVideoMessage(videoTitle) {
-    alert(`Los videos de "${videoTitle}" estarán disponibles próximamente. Para acceso inmediato, contacta directamente a David Fortín.`);
-}
-
-function requestMoreInfo(videoTitle) {
-    // Scroll al formulario de contacto y pre-llenar el asunto
-    const contactSection = document.getElementById('contacto');
-    const subjectSelect = document.getElementById('subject');
-    const messageTextarea = document.getElementById('message');
-    
-    if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-        
-        setTimeout(() => {
-            if (subjectSelect) {
-                subjectSelect.value = 'Medios';
-            }
-            if (messageTextarea) {
-                messageTextarea.value = `Hola David, me interesa conocer más detalles sobre tu trabajo en "${videoTitle}". `;
-                messageTextarea.focus();
-            }
-        }, 1000);
-    }
-}
 
 // Inicializar el modal cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
