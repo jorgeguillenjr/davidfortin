@@ -68,7 +68,7 @@ class ArtModal {
                         </div>
                     </div>
                     <div class="art-cta">
-                        <button class="btn-art" onclick="requestArtInfo('${image.title}', '${this.currentCollection?.title || 'Obra de Arte'}')">
+                        <button class="btn-art">
                             <svg class="btn-art-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h11l5-5v-2a2 2 0 0 0-2-2h-1"/>
                             </svg>
@@ -392,17 +392,18 @@ class ArtModal {
         
         if (prevButton) prevButton.style.opacity = index === 0 ? '0.5' : '1';
         if (nextButton) nextButton.style.opacity = index === this.currentCollection.images.length - 1 ? '0.5' : '1';
+        
+        // Actualizar botón "Más Info" con la información de la imagen actual
+        this.updateArtButtons();
     }
 
     updateArtButtons() {
-        // Actualizar los botones con la información correcta
-        const artButtons = this.modal.querySelectorAll('.btn-art');
-        artButtons.forEach((button, index) => {
-            if (this.currentCollection && this.currentCollection.images[index]) {
-                const image = this.currentCollection.images[index];
-                button.setAttribute('onclick', `requestArtInfo('${image.title}', '${this.currentCollection.title}')`);
-            }
-        });
+        // Actualizar el botón con la información de la imagen actual
+        const artButton = this.modal.querySelector('.btn-art');
+        if (artButton && this.currentCollection && this.currentCollection.images[this.currentImageIndex]) {
+            const currentImage = this.currentCollection.images[this.currentImageIndex];
+            artButton.setAttribute('onclick', `requestArtInfo('${currentImage.title}', '${this.currentCollection.title}')`);
+        }
     }
 
     previousImage() {

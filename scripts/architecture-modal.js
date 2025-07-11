@@ -76,7 +76,7 @@ class ArchitectureModal {
                         </div>
                     </div>
                     <div class="architecture-cta">
-                        <button class="btn-architecture" onclick="requestArchitectureInfo('${media.title}', '${this.currentProject?.title || 'Proyecto'}')">
+                        <button class="btn-architecture">
                             <svg class="btn-architecture-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h11l5-5v-2a2 2 0 0 0-2-2h-1"/>
                             </svg>
@@ -463,17 +463,18 @@ class ArchitectureModal {
         
         if (prevButton) prevButton.style.opacity = index === 0 ? '0.5' : '1';
         if (nextButton) nextButton.style.opacity = index === this.currentProject.media.length - 1 ? '0.5' : '1';
+        
+        // Actualizar botón "Más Info" con la información del media actual
+        this.updateArchitectureButtons();
     }
 
     updateArchitectureButtons() {
-        // Actualizar los botones con la información correcta
-        const archButtons = this.modal.querySelectorAll('.btn-architecture');
-        archButtons.forEach((button, index) => {
-            if (this.currentProject && this.currentProject.media[index]) {
-                const media = this.currentProject.media[index];
-                button.setAttribute('onclick', `requestArchitectureInfo('${media.title}', '${this.currentProject.title}')`);
-            }
-        });
+        // Actualizar el botón con la información del media actual
+        const archButton = this.modal.querySelector('.btn-architecture');
+        if (archButton && this.currentProject && this.currentProject.media[this.currentMediaIndex]) {
+            const currentMedia = this.currentProject.media[this.currentMediaIndex];
+            archButton.setAttribute('onclick', `requestArchitectureInfo('${currentMedia.title}', '${this.currentProject.title}')`);
+        }
     }
 
     previousMedia() {
