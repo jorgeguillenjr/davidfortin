@@ -204,9 +204,16 @@ class TVModal {
             }
         });
 
-        // Eventos del modal
+        // Eventos de cierre del modal
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-close') || e.target.classList.contains('modal-overlay')) {
+            // Cerrar con botón X
+            if (e.target.classList.contains('modal-close')) {
+                e.preventDefault();
+                this.closeModal();
+            }
+            
+            // Cerrar al hacer clic en el overlay (fondo)
+            if (e.target.classList.contains('modal-overlay')) {
                 this.closeModal();
             }
         });
@@ -218,8 +225,119 @@ class TVModal {
             }
         });
 
+        // Prevenir cierre al hacer clic dentro del contenido del modal
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.modal-content') && !e.target.classList.contains('modal-close')) {
+                e.stopPropagation();
+            }
+        });
+        
         // Prevenir scroll del body cuando el modal está abierto
-        this.modal.addEventListener('click', (e) => {
+        if (this.modal) {
+            this.modal.querySelector('.modal-content').addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+    }
+
+    openModal() {
+        if (!this.modal) return;
+        
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        this.isOpen = true;
+
+        // Focus en el botón de cerrar para accesibilidad
+        setTimeout(() => {
+            const closeButton = this.modal.querySelector('.modal-close');
+            if (closeButton) {
+                closeButton.focus();
+            }
+        }, 300);
+    }
+
+    closeModal() {
+        if (!this.modal) return;
+        
+        this.modal.classList.remove('active');
+        document.body.style.overflow = '';
+        this.isOpen = false;
+        
+        // Restaurar focus al elemento que abrió el modal
+        const portfolioItem = document.querySelector('.portfolio-item[data-category="medios"] h3');
+        if (portfolioItem) {
+            portfolioItem.focus();
+        }
+    }
+}
+
+// Funciones auxiliares para los botones de video
+function showVideoMessage(videoTitle) {
+    const message = `Los videos de "${videoTitle}" estarán disponibles próximamente. Para acceso inmediato, contacta directamente a David Fortín.`;
+    
+    // Crear un modal de confirmación más elegante
+    const confirmModal = document.createElement('div');
+    confirmModal.className = 'confirm-modal-overlay';
+    confirmModal.innerHTML = `
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-header">
+                <h3>Video no disponible</h3>
+                <button class="confirm-modal-close">×</button>
+            </div>
+            <div class="confirm-modal-body">
+                <p>${message}</p>
+                <div class="confirm-modal-actions">
+                    <button class="btn-primary" onclick="this.closest('.confirm-modal-overlay').remove(); scrollToSection('contacto');">Contactar Ahora</button>
+                    <button class="btn-secondary" onclick="this.closest('.confirm-modal-overlay').remove();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(confirmModal);
+    
+    // Eventos de cierre para el modal de confirmación
+    confirmModal.addEventListener('click', (e) => {
+        if (e.target.classList.contains('confirm-modal-overlay') || e.target.classList.contains('confirm-modal-close')) {
+            confirmModal.remove();
+        }
+    });
+    
+    // Auto-remover después de 10 segundos
+    setTimeout(() => {
+        if (confirmModal.parentNode) {
+            confirmModal.remove();
+        }
+    }, 10000);
+}
+
+function requestMoreInfo(videoTitle) {
+    // Cerrar el modal principal primero
+    const tvModal = document.getElementById('tvModal');
+    if (tvModal) {
+        tvModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Scroll al formulario de contacto y pre-llenar el asunto
+    const contactSection = document.getElementById('contacto');
+    const subjectSelect = document.getElementById('subject');
+    const messageTextarea = document.getElementById('message');
+    
+    if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+        
+        setTimeout(() => {
+            if (subjectSelect) {
+                subjectSelect.value = 'Medios';
+            }
+            if (messageTextarea) {
+                messageTextarea.value = `Hola David, me interesa conocer más detalles sobre tu trabajo en "${videoTitle}". `;
+                messageTextarea.focus();
+            }
+        }, 1000);
+    }
+}
             e.stopPropagation();
         });
     }
