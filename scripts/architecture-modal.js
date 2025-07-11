@@ -75,6 +75,14 @@ class ArchitectureModal {
                             </div>
                         </div>
                     </div>
+                    <div class="architecture-cta">
+                        <button class="btn-architecture" onclick="requestArchitectureInfo('${media.title}', '${this.currentProject?.title || 'Proyecto'}')">
+                            <svg class="btn-architecture-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h11l5-5v-2a2 2 0 0 0-2-2h-1"/>
+                            </svg>
+                            Más Info
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -332,6 +340,9 @@ class ArchitectureModal {
         // Mostrar primer media
         this.showMedia(0);
         
+        // Actualizar botones
+        this.updateArchitectureButtons();
+        
         // Abrir modal
         this.modal.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -454,6 +465,17 @@ class ArchitectureModal {
         if (nextButton) nextButton.style.opacity = index === this.currentProject.media.length - 1 ? '0.5' : '1';
     }
 
+    updateArchitectureButtons() {
+        // Actualizar los botones con la información correcta
+        const archButtons = this.modal.querySelectorAll('.btn-architecture');
+        archButtons.forEach((button, index) => {
+            if (this.currentProject && this.currentProject.media[index]) {
+                const media = this.currentProject.media[index];
+                button.setAttribute('onclick', `requestArchitectureInfo('${media.title}', '${this.currentProject.title}')`);
+            }
+        });
+    }
+
     previousMedia() {
         if (this.currentMediaIndex > 0) {
             this.showMedia(this.currentMediaIndex - 1);
@@ -464,6 +486,35 @@ class ArchitectureModal {
         if (this.currentProject && this.currentMediaIndex < this.currentProject.media.length - 1) {
             this.showMedia(this.currentMediaIndex + 1);
         }
+    }
+}
+
+// Función auxiliar para solicitar información de arquitectura
+function requestArchitectureInfo(mediaTitle, projectTitle) {
+    // Cerrar el modal principal primero
+    const architectureModal = document.getElementById('architectureModal');
+    if (architectureModal) {
+        architectureModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Scroll al formulario de contacto y pre-llenar el asunto
+    const contactSection = document.getElementById('contacto');
+    const subjectSelect = document.getElementById('subject');
+    const messageTextarea = document.getElementById('message');
+    
+    if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+        
+        setTimeout(() => {
+            if (subjectSelect) {
+                subjectSelect.value = 'Arquitectura';
+            }
+            if (messageTextarea) {
+                messageTextarea.value = `Hola David, me interesa conocer más detalles sobre "${mediaTitle}" del proyecto "${projectTitle}". `;
+                messageTextarea.focus();
+            }
+        }, 1000);
     }
 }
 

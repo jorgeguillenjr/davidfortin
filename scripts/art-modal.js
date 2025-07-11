@@ -67,6 +67,14 @@ class ArtModal {
                             </div>
                         </div>
                     </div>
+                    <div class="art-cta">
+                        <button class="btn-art" onclick="requestArtInfo('${image.title}', '${this.currentCollection?.title || 'Obra de Arte'}')">
+                            <svg class="btn-art-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h11l5-5v-2a2 2 0 0 0-2-2h-1"/>
+                            </svg>
+                            Más Info
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -283,6 +291,9 @@ class ArtModal {
         // Mostrar primera imagen
         this.showImage(0);
         
+        // Actualizar botones
+        this.updateArtButtons();
+        
         // Abrir modal
         this.modal.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -383,6 +394,17 @@ class ArtModal {
         if (nextButton) nextButton.style.opacity = index === this.currentCollection.images.length - 1 ? '0.5' : '1';
     }
 
+    updateArtButtons() {
+        // Actualizar los botones con la información correcta
+        const artButtons = this.modal.querySelectorAll('.btn-art');
+        artButtons.forEach((button, index) => {
+            if (this.currentCollection && this.currentCollection.images[index]) {
+                const image = this.currentCollection.images[index];
+                button.setAttribute('onclick', `requestArtInfo('${image.title}', '${this.currentCollection.title}')`);
+            }
+        });
+    }
+
     previousImage() {
         if (this.currentImageIndex > 0) {
             this.showImage(this.currentImageIndex - 1);
@@ -393,6 +415,35 @@ class ArtModal {
         if (this.currentCollection && this.currentImageIndex < this.currentCollection.images.length - 1) {
             this.showImage(this.currentImageIndex + 1);
         }
+    }
+}
+
+// Función auxiliar para solicitar información de arte
+function requestArtInfo(artTitle, collectionTitle) {
+    // Cerrar el modal principal primero
+    const artModal = document.getElementById('artModal');
+    if (artModal) {
+        artModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Scroll al formulario de contacto y pre-llenar el asunto
+    const contactSection = document.getElementById('contacto');
+    const subjectSelect = document.getElementById('subject');
+    const messageTextarea = document.getElementById('message');
+    
+    if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+        
+        setTimeout(() => {
+            if (subjectSelect) {
+                subjectSelect.value = 'Arte';
+            }
+            if (messageTextarea) {
+                messageTextarea.value = `Hola David, me interesa conocer más detalles sobre "${artTitle}" de la colección "${collectionTitle}". `;
+                messageTextarea.focus();
+            }
+        }, 1000);
     }
 }
 

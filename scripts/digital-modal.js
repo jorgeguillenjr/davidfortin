@@ -165,7 +165,23 @@ class DigitalModal {
                             <p>Contenido exclusivo y actualizado regularmente</p>
                         </div>
                         <div class="social-cta-preview">
-                            <a href="${content.socialUrl}" target="_blank" class="btn-social" style="border-color: ${content.color}; color: ${content.color}">
+                            <div class="social-buttons">
+                                <a href="${content.socialUrl}" target="_blank" class="btn-social" style="border-color: ${content.color}; color: ${content.color}">
+                                    <svg class="btn-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                        <polyline points="15,3 21,3 21,9"/>
+                                        <line x1="10" y1="14" x2="21" y2="3"/>
+                                    </svg>
+                                    Visitar ${content.platform}
+                                </a>
+                                <button class="btn-social" onclick="requestDigitalInfo('${content.title}')" style="border-color: ${content.color}; color: ${content.color}">
+                                    <svg class="btn-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h11l5-5v-2a2 2 0 0 0-2-2h-1"/>
+                                    </svg>
+                                    Más Info
+                                </button>
+                            </div>
+                        </div>
                                 <svg class="btn-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                                     <polyline points="15,3 21,3 21,9"/>
@@ -321,6 +337,35 @@ class DigitalModal {
         if (portfolioItem) {
             portfolioItem.focus();
         }
+    }
+}
+
+// Función auxiliar para solicitar más información
+function requestDigitalInfo(contentTitle) {
+    // Cerrar el modal principal primero
+    const digitalModal = document.getElementById('digitalModal');
+    if (digitalModal) {
+        digitalModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Scroll al formulario de contacto y pre-llenar el asunto
+    const contactSection = document.getElementById('contacto');
+    const subjectSelect = document.getElementById('subject');
+    const messageTextarea = document.getElementById('message');
+    
+    if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+        
+        setTimeout(() => {
+            if (subjectSelect) {
+                subjectSelect.value = 'Medios';
+            }
+            if (messageTextarea) {
+                messageTextarea.value = `Hola David, me interesa conocer más sobre tu trabajo en "${contentTitle}". `;
+                messageTextarea.focus();
+            }
+        }, 1000);
     }
 }
 

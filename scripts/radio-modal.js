@@ -201,11 +201,17 @@ class RadioModal {
                         </ul>
                     </div>
                     <div class="audio-cta">
+                        <button class="btn-audio" onclick="showAudioMessage('${audio.title}')">
+                            <svg class="btn-audio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5,3 19,12 5,21"/>
+                            </svg>
+                            Escuchar Audio
+                        </button>
                         <button class="btn-audio" onclick="requestAudioAccess('${audio.title}')">
                             <svg class="btn-audio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h11l5-5v-2a2 2 0 0 0-2-2h-1"/>
                             </svg>
-                            Solicitar Audio Completo
+                            Más Info
                         </button>
                     </div>
                 </div>
@@ -319,6 +325,46 @@ class RadioModal {
             time.textContent = '0:00';
         });
     }
+}
+
+// Funciones auxiliares para los botones de audio
+function showAudioMessage(audioTitle) {
+    const message = `Los audios completos de "${audioTitle}" están disponibles bajo solicitud. Para acceso inmediato, contacta directamente a David Fortín.`;
+    
+    // Crear un modal de confirmación más elegante
+    const confirmModal = document.createElement('div');
+    confirmModal.className = 'confirm-modal-overlay';
+    confirmModal.innerHTML = `
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-header">
+                <h3>Audio disponible bajo solicitud</h3>
+                <button class="confirm-modal-close">×</button>
+            </div>
+            <div class="confirm-modal-body">
+                <p>${message}</p>
+                <div class="confirm-modal-actions">
+                    <button class="btn-primary" onclick="this.closest('.confirm-modal-overlay').remove(); scrollToSection('contacto');">Contactar Ahora</button>
+                    <button class="btn-secondary" onclick="this.closest('.confirm-modal-overlay').remove();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(confirmModal);
+    
+    // Eventos de cierre para el modal de confirmación
+    confirmModal.addEventListener('click', (e) => {
+        if (e.target.classList.contains('confirm-modal-overlay') || e.target.classList.contains('confirm-modal-close')) {
+            confirmModal.remove();
+        }
+    });
+    
+    // Auto-remover después de 10 segundos
+    setTimeout(() => {
+        if (confirmModal.parentNode) {
+            confirmModal.remove();
+        }
+    }, 10000);
 }
 
 // Funciones auxiliares para los controles de audio
