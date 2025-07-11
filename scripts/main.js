@@ -231,14 +231,14 @@ function initializeContactForm() {
                     // Redirigir a página de agradecimiento después de 2 segundos
                     setTimeout(() => {
                         window.location.href = 'gracias.html';
-                    }, 2000);
+                    }, 1500);
                 } else {
                     throw new Error('Error en el envío');
                 }
                 
             } catch (error) {
                 console.error('Error al enviar el mensaje:', error);
-                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente a davidfortin04048@gmail.com', 'error');
+                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente por WhatsApp: +504 8882-1888', 'error');
             } finally {
                 // Restaurar botón
                 submitButton.textContent = originalText;
@@ -264,22 +264,62 @@ function initializeContactForm() {
 // Función para enviar email con FormSubmit
 async function sendEmailWithFormSubmit(formData) {
     try {
+        // Usar fetch para envío con FormSubmit
+        const response = await fetch('https://formsubmit.co/davidfortin04048@gmail.com', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: formData.get('from_name'),
+                email: formData.get('from_email'),
+                subject: `Contacto desde davidfortin.com: ${formData.get('subject')}`,
+                message: formData.get('message'),
+                _captcha: false,
+                _template: 'table'
+            })
+        });
+
+        if (response.ok) {
+            return true;
+        } else {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        
+    } catch (error) {
+        console.error('Error en sendEmailWithFormSubmit:', error);
+        
+        // Fallback: usar método de formulario tradicional
+        try {
+            return await sendEmailWithFormMethod(formData);
+        } catch (fallbackError) {
+            console.error('Error en fallback:', fallbackError);
+            return false;
+        }
+    }
+}
+
+// Método alternativo usando formulario tradicional
+async function sendEmailWithFormMethod(formData) {
+    return new Promise((resolve) => {
+        // Crear formulario temporal para envío
+        const tempForm = document.createElement('form');
+        tempForm.method = 'POST';
+        tempForm.action = 'https://formsubmit.co/davidfortin04048@gmail.com';
+        tempForm.target = '_blank'; // Abrir en nueva ventana
+        tempForm.style.display = 'none';
+        
         // Preparar datos para FormSubmit
         const submitData = {
             name: formData.get('from_name'),
             email: formData.get('from_email'),
             subject: `Contacto desde davidfortin.com: ${formData.get('subject')}`,
             message: formData.get('message'),
-            _next: window.location.origin + '/gracias.html', // Página de redirección
+            _next: window.location.origin + '/gracias.html',
             _captcha: false,
             _template: 'table'
         };
-        
-        // Crear formulario temporal para envío
-        const tempForm = document.createElement('form');
-        tempForm.method = 'POST';
-        tempForm.action = 'https://formsubmit.co/davidfortin04048@gmail.com';
-        tempForm.style.display = 'none';
         
         // Agregar campos al formulario
         Object.keys(submitData).forEach(key => {
@@ -294,11 +334,16 @@ async function sendEmailWithFormSubmit(formData) {
         document.body.appendChild(tempForm);
         tempForm.submit();
         
-        return true;
+        // Limpiar formulario después de un momento
+        setTimeout(() => {
+            if (tempForm.parentNode) {
+                tempForm.remove();
+            }
+        }, 1000);
         
-    } catch (error) {
-        console.error('Error en sendEmailWithFormSubmit:', error);
-        return false;
+        resolve(true);
+    });
+}
     }
 }
 
