@@ -195,28 +195,45 @@ class TVModal {
     }
 
     bindEvents() {
-        // Evento para abrir modal desde portfolio
+        // Evento para abrir modal desde la imagen del portfolio
         document.addEventListener('click', (e) => {
-            const portfolioItem = e.target.closest('.portfolio-item[data-category="medios"]');
+            // Verificar si se hizo clic en la imagen o contenedor de imagen del item "Presentador de TV"
+            const portfolioImage = e.target.closest('.portfolio-image');
+            const portfolioItem = portfolioImage?.closest('.portfolio-item[data-category="medios"]');
+            
             if (portfolioItem && portfolioItem.querySelector('h3')?.textContent === 'Presentador de TV') {
                 e.preventDefault();
+                e.stopPropagation();
                 this.openModal();
             }
         });
 
-        // Eventos de cierre del modal
-        document.addEventListener('click', (e) => {
-            // Cerrar con botón X
-            if (e.target.classList.contains('modal-close')) {
-                e.preventDefault();
-                this.closeModal();
+        // Evento específico para el botón de cerrar
+        if (this.modal) {
+            const closeButton = this.modal.querySelector('.modal-close');
+            if (closeButton) {
+                closeButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.closeModal();
+                });
             }
             
-            // Cerrar al hacer clic en el overlay (fondo)
-            if (e.target.classList.contains('modal-overlay')) {
-                this.closeModal();
+            // Evento para cerrar al hacer clic en el overlay
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.closeModal();
+                }
+            });
+            
+            // Prevenir cierre al hacer clic dentro del contenido
+            const modalContent = this.modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
             }
-        });
+        }
 
         // Cerrar con tecla Escape
         document.addEventListener('keydown', (e) => {
@@ -224,20 +241,6 @@ class TVModal {
                 this.closeModal();
             }
         });
-
-        // Prevenir cierre al hacer clic dentro del contenido del modal
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.modal-content') && !e.target.classList.contains('modal-close')) {
-                e.stopPropagation();
-            }
-        });
-        
-        // Prevenir scroll del body cuando el modal está abierto
-        if (this.modal) {
-            this.modal.querySelector('.modal-content').addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-        }
     }
 
     openModal() {

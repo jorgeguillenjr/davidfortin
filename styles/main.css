@@ -596,25 +596,6 @@ section {
   margin: 0;
 }
 
-/* Indicador visual para elementos clickeables del portfolio */
-.portfolio-item[data-category="medios"]:hover .portfolio-content::after {
-  content: "Clic para ver videos →";
-  position: absolute;
-  bottom: var(--spacing-md);
-  right: var(--spacing-lg);
-  background-color: var(--accent-color);
-  color: var(--background-white);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  opacity: 0;
-  animation: fadeInUp 0.3s ease-out forwards;
-}
-
-.portfolio-content {
-  position: relative;
-}
 
 /* Contact Section */
 .contact {
