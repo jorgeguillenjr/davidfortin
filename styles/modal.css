@@ -704,6 +704,321 @@
   }
 }
 
+/* Estilos específicos para Modal de Galería de Arte */
+.art-modal-content {
+  max-width: 1100px;
+  width: 95%;
+  max-height: 95vh;
+}
+
+.art-modal-body {
+  padding: 0;
+  background-color: var(--background-white);
+}
+
+.art-gallery-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.gallery-main {
+  padding: var(--spacing-xl);
+  flex: 1;
+}
+
+.gallery-image-container {
+  position: relative;
+  margin-bottom: var(--spacing-lg);
+  background-color: var(--background-light);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-main-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+}
+
+.image-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-light);
+  border-top: 3px solid var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-nav:hover {
+  background-color: var(--background-white);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-nav svg {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+}
+
+.gallery-prev {
+  left: var(--spacing-md);
+}
+
+.gallery-next {
+  right: var(--spacing-md);
+}
+
+.gallery-info {
+  text-align: center;
+  padding: var(--spacing-lg);
+  background-color: var(--background-light);
+  border-radius: 12px;
+  border: 1px solid rgba(232, 232, 232, 0.4);
+}
+
+.gallery-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+}
+
+.gallery-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+  font-size: 1rem;
+}
+
+.gallery-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.image-counter {
+  color: var(--accent-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.image-details {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.gallery-thumbnails {
+  border-top: 1px solid rgba(232, 232, 232, 0.5);
+  background-color: var(--background-light);
+  padding: var(--spacing-lg);
+}
+
+.thumbnails-container {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  padding-bottom: var(--spacing-xs);
+}
+
+.gallery-thumbnail {
+  position: relative;
+  flex-shrink: 0;
+  width: 100px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  border: 2px solid transparent;
+}
+
+.gallery-thumbnail:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-color);
+}
+
+.gallery-thumbnail.active {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(212, 175, 122, 0.3);
+}
+
+.gallery-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: var(--spacing-xs);
+  opacity: 0;
+  transition: var(--transition-normal);
+}
+
+.gallery-thumbnail:hover .thumbnail-overlay {
+  opacity: 1;
+}
+
+.thumbnail-title {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Scroll personalizado para thumbnails */
+.thumbnails-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.thumbnails-container::-webkit-scrollbar-track {
+  background: rgba(250, 250, 250, 0.5);
+  border-radius: 3px;
+}
+
+.thumbnails-container::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 122, 0.6);
+  border-radius: 3px;
+}
+
+.thumbnails-container::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Responsive para Modal de Arte */
+@media (max-width: 768px) {
+  .art-modal-content {
+    width: 98%;
+    max-height: 98vh;
+  }
+  
+  .gallery-main {
+    padding: var(--spacing-lg);
+  }
+  
+  .gallery-image-container {
+    height: 350px;
+  }
+  
+  .gallery-nav {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .gallery-nav svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .gallery-prev {
+    left: var(--spacing-sm);
+  }
+  
+  .gallery-next {
+    right: var(--spacing-sm);
+  }
+  
+  .gallery-meta {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-xs);
+  }
+  
+  .gallery-thumbnails {
+    padding: var(--spacing-md);
+  }
+  
+  .gallery-thumbnail {
+    width: 80px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-main {
+    padding: var(--spacing-md);
+  }
+  
+  .gallery-image-container {
+    height: 280px;
+  }
+  
+  .gallery-info {
+    padding: var(--spacing-md);
+  }
+  
+  .gallery-title {
+    font-size: 1.3rem;
+  }
+  
+  .gallery-description {
+    font-size: 0.95rem;
+  }
+  
+  .gallery-thumbnail {
+    width: 70px;
+    height: 50px;
+  }
+}
+
 /* Estilos específicos para Modal de Radio */
 .audio-grid {
   display: grid;
