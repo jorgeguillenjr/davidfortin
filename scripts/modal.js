@@ -345,4 +345,5 @@ function requestMoreInfo(videoTitle) {
 // Inicializar el modal cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
     new TVModal();
+    new RadioModal();
 });
