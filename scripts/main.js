@@ -274,6 +274,8 @@ async function sendEmailWithFormSubmit(formData) {
             body: JSON.stringify({
                 name: formData.get('from_name'),
                 email: formData.get('from_email'),
+                phone: formData.get('phone'),
+                phone: formData.get('phone'),
                 subject: `Contacto desde davidfortin.com: ${formData.get('subject')}`,
                 message: formData.get('message'),
                 _captcha: false,
@@ -314,6 +316,7 @@ async function sendEmailWithFormMethod(formData) {
         const submitData = {
             name: formData.get('from_name'),
             email: formData.get('from_email'),
+            phone: formData.get('phone'),
             subject: `Contacto desde davidfortin.com: ${formData.get('subject')}`,
             message: formData.get('message'),
             _next: window.location.origin + '/gracias.html',
@@ -371,6 +374,9 @@ function validateField(field) {
     } else if (fieldType === 'email' && value && !isValidEmail(value)) {
         errorMessage = 'Por favor, introduce un email válido.';
         isValid = false;
+    } else if (fieldType === 'tel' && value && !isValidPhone(value)) {
+        errorMessage = 'Por favor, introduce un número de teléfono válido.';
+        isValid = false;
     }
     
     // Mostrar/ocultar error
@@ -386,6 +392,12 @@ function validateField(field) {
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+}
+
+function isValidPhone(phone) {
+    // Acepta formatos: +504 0000-0000, 504-0000-0000, 00000000, etc.
+    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{8,15}$/;
+    return phoneRegex.test(phone);
 }
 
 function showFieldError(field, message) {
