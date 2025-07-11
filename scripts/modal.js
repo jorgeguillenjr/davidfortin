@@ -30,7 +30,7 @@ class TVModal {
                     </div>
                     <div class="modal-body">
                         <div class="modal-intro">
-                            <p>Descubre algunos de los programas y proyectos más destacados de David Fortín en televisión. Cada trabajo representa una experiencia única y un crecimiento profesional constante en el mundo del entretenimiento.</p>
+                            <p>Explora la trayectoria televisiva de David Fortín a través de sus proyectos más destacados. Cada programa representa una experiencia única en el mundo del entretenimiento hondureño.</p>
                         </div>
                         <div class="videos-grid">
                             ${this.generateVideoItems()}
