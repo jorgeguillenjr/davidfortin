@@ -9,6 +9,7 @@ class TVModal {
 
     init() {
         this.createModal();
+        this.createVideoPlayerModal();
         this.bindEvents();
     }
 
@@ -59,7 +60,9 @@ class TVModal {
                     "Cobertura de eventos especiales",
                     "Interacción en vivo con televidentes"
                 ],
-                videoNote: "Próximamente disponible"
+                videoNote: "Video disponible",
+                videoSrc: "media/medios/tv-videos/LM5 - Truco de Magia.mp4",
+                hasVideo: true
             },
             {
                 title: "Especial de Fin de Año",
@@ -73,7 +76,8 @@ class TVModal {
                     "Entrevistas exclusivas",
                     "Conexión con celebraciones en todo el país"
                 ],
-                videoNote: "Destacados disponibles"
+                videoNote: "Próximamente disponible",
+                hasVideo: false
             },
             {
                 title: "Reality Show - Competencia Culinaria",
@@ -87,7 +91,8 @@ class TVModal {
                     "Retos culinarios innovadores",
                     "Historias humanas inspiradoras"
                 ],
-                videoNote: "Episodios completos en archivo"
+                videoNote: "Próximamente disponible",
+                hasVideo: false
             },
             {
                 title: "Programa de Entrevistas Nocturno",
@@ -101,7 +106,8 @@ class TVModal {
                     "Invitados de alto perfil",
                     "Segmentos de música en vivo"
                 ],
-                videoNote: "Mejores momentos disponibles"
+                videoNote: "Próximamente disponible",
+                hasVideo: false
             },
             {
                 title: "Cobertura Especial - Eventos Deportivos",
@@ -115,7 +121,8 @@ class TVModal {
                     "Ceremonias de premiación",
                     "Entrevistas post-partido"
                 ],
-                videoNote: "Archivo de transmisiones"
+                videoNote: "Próximamente disponible",
+                hasVideo: false
             },
             {
                 title: "Programa Juvenil de Fin de Semana",
@@ -129,19 +136,35 @@ class TVModal {
                     "Tecnología y gaming",
                     "Concursos y dinámicas interactivas"
                 ],
-                videoNote: "Contenido en redes sociales"
+                videoNote: "Próximamente disponible",
+                hasVideo: false
             }
         ];
 
         return videos.map(video => `
             <div class="video-item">
-                <div class="video-container">
-                    <div class="video-placeholder">
-                        <svg class="video-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <polygon points="5,3 19,12 5,21"/>
-                        </svg>
-                        <p>${video.videoNote}</p>
-                    </div>
+                <div class="video-container" ${video.hasVideo ? `onclick="playVideo('${video.videoSrc}', '${video.title}')"` : ''}>
+                    ${video.hasVideo ? `
+                        <video class="video-preview" preload="metadata" poster="">
+                            <source src="${video.videoSrc}" type="video/mp4">
+                            Tu navegador no soporta videos HTML5.
+                        </video>
+                        <div class="video-play-overlay">
+                            <svg class="video-play-icon" viewBox="0 0 24 24" fill="white" width="48" height="48">
+                                <polygon points="5,3 19,12 5,21"/>
+                            </svg>
+                        </div>
+                        <div class="video-available-badge">
+                            <span>▶ Video Disponible</span>
+                        </div>
+                    ` : `
+                        <div class="video-placeholder">
+                            <svg class="video-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <polygon points="5,3 19,12 5,21"/>
+                            </svg>
+                            <p>${video.videoNote}</p>
+                        </div>
+                    `}
                 </div>
                 <div class="video-info">
                     <h3 class="video-title">${video.title}</h3>
@@ -176,7 +199,7 @@ class TVModal {
                         </ul>
                     </div>
                     <div class="video-cta">
-                        <button class="btn-video" onclick="showVideoMessage('${video.title}')">
+                        <button class="btn-video" onclick="${video.hasVideo ? `playVideo('${video.videoSrc}', '${video.title}')` : `showVideoMessage('${video.title}')`}">
                             <svg class="btn-video-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polygon points="5,3 19,12 5,21"/>
                             </svg>
@@ -192,6 +215,74 @@ class TVModal {
                 </div>
             </div>
         `).join('');
+    }
+
+    createVideoPlayerModal() {
+        const videoPlayerHTML = `
+            <div class="modal-overlay" id="videoPlayerModal">
+                <div class="video-player-content">
+                    <div class="video-player-header">
+                        <h3 class="video-player-title"></h3>
+                        <button class="modal-close video-player-close" aria-label="Cerrar reproductor">×</button>
+                    </div>
+                    <div class="video-player-container">
+                        <video class="main-video-player" controls preload="metadata">
+                            <source src="" type="video/mp4">
+                            Tu navegador no soporta videos HTML5.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', videoPlayerHTML);
+        
+        // Eventos para el reproductor de video
+        const videoPlayerModal = document.getElementById('videoPlayerModal');
+        const videoPlayerClose = videoPlayerModal.querySelector('.video-player-close');
+        const mainVideoPlayer = videoPlayerModal.querySelector('.main-video-player');
+        
+        videoPlayerClose.addEventListener('click', () => {
+            this.closeVideoPlayer();
+        });
+        
+        videoPlayerModal.addEventListener('click', (e) => {
+            if (e.target === videoPlayerModal) {
+                this.closeVideoPlayer();
+            }
+        });
+        
+        // Cerrar con Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && videoPlayerModal.classList.contains('active')) {
+                this.closeVideoPlayer();
+            }
+        });
+    }
+    
+    openVideoPlayer(videoSrc, videoTitle) {
+        const videoPlayerModal = document.getElementById('videoPlayerModal');
+        const videoPlayerTitle = videoPlayerModal.querySelector('.video-player-title');
+        const mainVideoPlayer = videoPlayerModal.querySelector('.main-video-player source');
+        const videoElement = videoPlayerModal.querySelector('.main-video-player');
+        
+        videoPlayerTitle.textContent = videoTitle;
+        mainVideoPlayer.src = videoSrc;
+        videoElement.load();
+        
+        videoPlayerModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    closeVideoPlayer() {
+        const videoPlayerModal = document.getElementById('videoPlayerModal');
+        const videoElement = videoPlayerModal.querySelector('.main-video-player');
+        
+        videoElement.pause();
+        videoElement.currentTime = 0;
+        
+        videoPlayerModal.classList.remove('active');
+        document.body.style.overflow = '';
     }
 
     bindEvents() {
@@ -274,6 +365,15 @@ class TVModal {
     }
 }
 
+// Función global para reproducir video
+function playVideo(videoSrc, videoTitle) {
+    // Obtener la instancia del modal de TV
+    const tvModalInstance = window.tvModalInstance || new TVModal();
+    window.tvModalInstance = tvModalInstance;
+    
+    tvModalInstance.openVideoPlayer(videoSrc, videoTitle);
+}
+
 // Funciones auxiliares para los botones de video
 function showVideoMessage(videoTitle) {
     const message = `Los videos de "${videoTitle}" estarán disponibles próximamente. Para acceso inmediato, contacta directamente a David Fortín.`;
@@ -344,6 +444,6 @@ function requestMoreInfo(videoTitle) {
 
 // Inicializar el modal cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
-    new TVModal();
+    window.tvModalInstance = new TVModal();
     new RadioModal();
 });
