@@ -89,6 +89,7 @@ p {
   margin-bottom: var(--spacing-sm);
   color: var(--text-secondary);
   line-height: 1.7;
+  text-align: justify;
 }
 
 /* Enlaces */
