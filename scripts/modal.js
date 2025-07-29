@@ -9,7 +9,6 @@ class TVModal {
 
     init() {
         this.createModal();
-        this.createVideoPlayerModal();
         this.bindEvents();
     }
 
@@ -143,7 +142,7 @@ class TVModal {
 
         return videos.map(video => `
             <div class="video-item">
-                <div class="video-container" ${video.hasVideo ? `onclick="playVideo('${video.videoSrc}', '${video.title}')"` : ''}>
+                <div class="video-container" ${video.hasVideo ? `onclick="showVideoInModal('${video.videoSrc}', '${video.title}')"` : ''}>
                     ${video.hasVideo ? `
                         <video class="video-preview" preload="metadata" poster="">
                             <source src="${video.videoSrc}" type="video/mp4">
@@ -199,7 +198,7 @@ class TVModal {
                         </ul>
                     </div>
                     <div class="video-cta">
-                        <button class="btn-video" onclick="${video.hasVideo ? `playVideo('${video.videoSrc}', '${video.title}')` : `showVideoMessage('${video.title}')`}">
+                        <button class="btn-video" onclick="${video.hasVideo ? `showVideoInModal('${video.videoSrc}', '${video.title}')` : `showVideoMessage('${video.title}')`}">
                             <svg class="btn-video-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polygon points="5,3 19,12 5,21"/>
                             </svg>
@@ -217,72 +216,74 @@ class TVModal {
         `).join('');
     }
 
-    createVideoPlayerModal() {
-        const videoPlayerHTML = `
-            <div class="modal-overlay" id="videoPlayerModal">
-                <div class="video-player-content">
+    showVideoInModal(videoSrc, videoTitle) {
+        // Ocultar la grilla de videos
+        const videosGrid = this.modal.querySelector('.videos-grid');
+        const modalIntro = this.modal.querySelector('.modal-intro');
+        
+        if (videosGrid) videosGrid.style.display = 'none';
+        if (modalIntro) modalIntro.style.display = 'none';
+        
+        // Crear o mostrar el reproductor de video integrado
+        let videoPlayer = this.modal.querySelector('.integrated-video-player');
+        
+        if (!videoPlayer) {
+            const videoPlayerHTML = `
+                <div class="integrated-video-player">
                     <div class="video-player-header">
-                        <h3 class="video-player-title"></h3>
-                        <button class="modal-close video-player-close" aria-label="Cerrar reproductor">×</button>
+                        <h3 class="video-player-title">${videoTitle}</h3>
+                        <button class="btn-back-to-list" onclick="window.tvModalInstance.showVideoList()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15,18 9,12 15,6"/>
+                            </svg>
+                            Volver a la lista
+                        </button>
                     </div>
                     <div class="video-player-container">
                         <video class="main-video-player" controls preload="metadata">
-                            <source src="" type="video/mp4">
+                            <source src="${videoSrc}" type="video/mp4">
                             Tu navegador no soporta videos HTML5.
                         </video>
                     </div>
+                    <div class="video-player-info">
+                        <p>Disfruta de este contenido exclusivo de David Fortín en televisión. Utiliza los controles del reproductor para pausar, ajustar el volumen o ver en pantalla completa.</p>
+                    </div>
                 </div>
-            </div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', videoPlayerHTML);
-        
-        // Eventos para el reproductor de video
-        const videoPlayerModal = document.getElementById('videoPlayerModal');
-        const videoPlayerClose = videoPlayerModal.querySelector('.video-player-close');
-        const mainVideoPlayer = videoPlayerModal.querySelector('.main-video-player');
-        
-        videoPlayerClose.addEventListener('click', () => {
-            this.closeVideoPlayer();
-        });
-        
-        videoPlayerModal.addEventListener('click', (e) => {
-            if (e.target === videoPlayerModal) {
-                this.closeVideoPlayer();
-            }
-        });
-        
-        // Cerrar con Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && videoPlayerModal.classList.contains('active')) {
-                this.closeVideoPlayer();
-            }
-        });
+            `;
+            
+            const modalBody = this.modal.querySelector('.modal-body');
+            modalBody.insertAdjacentHTML('beforeend', videoPlayerHTML);
+            videoPlayer = this.modal.querySelector('.integrated-video-player');
+        } else {
+            // Actualizar video existente
+            const title = videoPlayer.querySelector('.video-player-title');
+            const videoSource = videoPlayer.querySelector('.main-video-player source');
+            const videoElement = videoPlayer.querySelector('.main-video-player');
+            
+            title.textContent = videoTitle;
+            videoSource.src = videoSrc;
+            videoElement.load();
+            videoPlayer.style.display = 'block';
+        }
     }
     
-    openVideoPlayer(videoSrc, videoTitle) {
-        const videoPlayerModal = document.getElementById('videoPlayerModal');
-        const videoPlayerTitle = videoPlayerModal.querySelector('.video-player-title');
-        const mainVideoPlayer = videoPlayerModal.querySelector('.main-video-player source');
-        const videoElement = videoPlayerModal.querySelector('.main-video-player');
+    showVideoList() {
+        // Mostrar la grilla de videos
+        const videosGrid = this.modal.querySelector('.videos-grid');
+        const modalIntro = this.modal.querySelector('.modal-intro');
+        const videoPlayer = this.modal.querySelector('.integrated-video-player');
         
-        videoPlayerTitle.textContent = videoTitle;
-        mainVideoPlayer.src = videoSrc;
-        videoElement.load();
-        
-        videoPlayerModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    closeVideoPlayer() {
-        const videoPlayerModal = document.getElementById('videoPlayerModal');
-        const videoElement = videoPlayerModal.querySelector('.main-video-player');
-        
-        videoElement.pause();
-        videoElement.currentTime = 0;
-        
-        videoPlayerModal.classList.remove('active');
-        document.body.style.overflow = '';
+        if (videosGrid) videosGrid.style.display = 'grid';
+        if (modalIntro) modalIntro.style.display = 'block';
+        if (videoPlayer) {
+            // Pausar video antes de ocultar
+            const video = videoPlayer.querySelector('.main-video-player');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
+            videoPlayer.style.display = 'none';
+        }
     }
 
     bindEvents() {
@@ -353,6 +354,19 @@ class TVModal {
     closeModal() {
         if (!this.modal) return;
         
+        // Pausar cualquier video que esté reproduciéndose
+        const videoPlayer = this.modal.querySelector('.integrated-video-player');
+        if (videoPlayer) {
+            const video = videoPlayer.querySelector('.main-video-player');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
+        }
+        
+        // Mostrar la lista de videos al cerrar
+        this.showVideoList();
+        
         this.modal.classList.remove('active');
         document.body.style.overflow = '';
         this.isOpen = false;
@@ -365,13 +379,13 @@ class TVModal {
     }
 }
 
-// Función global para reproducir video
-function playVideo(videoSrc, videoTitle) {
+// Función global para mostrar video en modal
+function showVideoInModal(videoSrc, videoTitle) {
     // Obtener la instancia del modal de TV
     const tvModalInstance = window.tvModalInstance || new TVModal();
     window.tvModalInstance = tvModalInstance;
     
-    tvModalInstance.openVideoPlayer(videoSrc, videoTitle);
+    tvModalInstance.showVideoInModal(videoSrc, videoTitle);
 }
 
 // Funciones auxiliares para los botones de video
