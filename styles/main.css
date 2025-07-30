@@ -89,7 +89,6 @@ p {
   margin-bottom: var(--spacing-sm);
   color: var(--text-secondary);
   line-height: 1.7;
-  text-align: justify;
 }
 
 /* Enlaces */
@@ -307,6 +306,7 @@ section {
 .hero-description p {
   font-size: 1.1rem;
   line-height: 1.8;
+  text-align: justify;
 }
 
 .hero-cta {
@@ -888,4 +888,8 @@ section {
   .portfolio-image {
     height: 300px; /* Ajustado para pantallas muy pequeñas */
   }
+}
+
+medios-parrafo{
+  text-align: justify;
 }
