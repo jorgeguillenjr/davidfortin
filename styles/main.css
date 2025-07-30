@@ -888,4 +888,18 @@ section {
   .portfolio-image {
     height: 300px; /* Ajustado para pantallas muy pequeñas */
   }
+  
+  .logos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .logo-item {
+    height: 60px;
+    padding: var(--spacing-xs);
+  }
+  
+  .company-logo {
+    max-height: 40px;
+  }
 }
