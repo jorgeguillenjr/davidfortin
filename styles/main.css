@@ -811,7 +811,7 @@ section {
 }
 
 .footer-encode-logo {
-  height: 40px;
+  height: 48px;
   width: auto;
   opacity: 0.9;
   transition: var(--transition-normal);
