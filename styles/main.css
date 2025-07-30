@@ -734,6 +734,61 @@ section {
   min-height: 120px;
 }
 
+/* Estilos para logos de empresas colaboradoras */
+.company-logos {
+  margin-top: var(--spacing-xl);
+}
+
+.company-logos h4 {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.logos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: var(--spacing-md);
+  align-items: center;
+  justify-items: center;
+}
+
+.logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm);
+  background-color: var(--background-white);
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  transition: var(--transition-normal);
+  height: 80px;
+  width: 100%;
+  max-width: 120px;
+}
+
+.logo-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+  border-color: var(--accent-color);
+}
+
+.company-logo {
+  max-width: 100%;
+  max-height: 50px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(20%);
+  transition: var(--transition-normal);
+}
+
+.logo-item:hover .company-logo {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
 /* Footer */
 .footer {
   background-color: var(--primary-color);
