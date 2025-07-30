@@ -811,7 +811,7 @@ section {
 }
 
 .footer-encode-logo {
-  height: 48px;
+  height: 60px;
   width: auto;
   opacity: 0.9;
   transition: var(--transition-normal);
@@ -832,8 +832,8 @@ section {
 }
 
 .footer-spacer {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
 }
 
 .footer-logo {
@@ -860,7 +860,7 @@ section {
   }
   
   .footer-encode-logo {
-    height: 32px;
+    height: 48px;
   }
 }
 
