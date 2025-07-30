@@ -24,13 +24,14 @@ class TVModal {
                                 <line x1="8" y1="21" x2="16" y2="21"/>
                                 <line x1="12" y1="17" x2="12" y2="21"/>
                             </svg>
-                            Trabajos en Televisión
+                            Presentador de TV
                         </h2>
                         <button class="modal-close" aria-label="Cerrar modal">×</button>
                     </div>
                     <div class="modal-body">
                         <div class="modal-intro">
-                            <p>Descubre algunos de los programas y proyectos más destacados de David Fortín en televisión. Cada trabajo representa una experiencia única y un crecimiento profesional constante en el mundo del entretenimiento.</p>
+                            <p>Profesional multidisciplinario con más de 10 años de experiencia en el mundo del entretenimiento, la moda y el diseño arquitectónico. Mi enfoque combina creatividad, elegancia y funcionalidad, construyendo una visión única que trasciende disciplinas.</p>
+                            <p>Como arquitecto y presentador, he desarrollado una carrera que integra el pensamiento estético con la comunicación efectiva. Además, como creador de contenido, me especializo en temas vinculados al arte, el diseño, el lifestyle y la cultura visual contemporánea, priorizando una conexión genuina y espontánea con mi audiencia.</p>
                         </div>
                         <div class="videos-grid">
                             ${this.generateVideoItems()}

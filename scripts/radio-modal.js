@@ -25,7 +25,7 @@ class RadioModal {
                                 <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
                                 <path d="M12 14l-9-5 9 5z"/>
                             </svg>
-                            Trabajos en Radio
+                            Locutor Comercial
                         </h2>
                         <button class="modal-close" aria-label="Cerrar modal">×</button>
                     </div>
@@ -226,7 +226,7 @@ class RadioModal {
             const portfolioImage = e.target.closest('.portfolio-image');
             const portfolioItem = portfolioImage?.closest('.portfolio-item[data-category="medios"]');
             
-            if (portfolioItem && portfolioItem.querySelector('h3')?.textContent === 'Locutor de Radio') {
+            if (portfolioItem && portfolioItem.querySelector('h3')?.textContent === 'Locutor Comercial') {
                 e.preventDefault();
                 e.stopPropagation();
                 this.openModal();

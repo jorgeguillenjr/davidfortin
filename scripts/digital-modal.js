@@ -65,7 +65,8 @@ class DigitalModal {
                 socialUrl: "https://www.instagram.com/davidjesusfortin/",
                 icon: "instagram",
                 color: "#E4405F"
-            },
+            }
+          ,
             {
                 title: "TikTok - Contenido Viral y Entretenimiento",
                 platform: "TikTok",
