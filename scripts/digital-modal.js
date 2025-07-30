@@ -66,87 +66,87 @@ class DigitalModal {
                 icon: "instagram",
                 color: "#E4405F"
             }
-          ,
-            {
-                title: "TikTok - Contenido Viral y Entretenimiento",
-                platform: "TikTok",
-                followers: "15K+ seguidores",
-                type: "Videos Cortos",
-                description: "Videos dinámicos y entretenidos que muestran la personalidad carismática de David. Desde challenges hasta contenido educativo sobre medios y arquitectura, siempre con un toque único.",
-                highlights: [
-                    "Videos virales de entretenimiento",
-                    "Tips de presentación y comunicación",
-                    "Behind the scenes de TV",
-                    "Tendencias y challenges populares"
-                ],
-                socialUrl: "#",
-                icon: "tiktok",
-                color: "#000000"
-            },
-            {
-                title: "YouTube - Contenido Educativo y Profesional",
-                platform: "YouTube",
-                followers: "8K+ suscriptores",
-                type: "Videos Largos",
-                description: "Canal dedicado a contenido educativo sobre comunicación, arquitectura y desarrollo personal. Tutoriales, entrevistas y documentales que inspiran y educan a la audiencia.",
-                highlights: [
-                    "Tutoriales de comunicación efectiva",
-                    "Tours arquitectónicos detallados",
-                    "Entrevistas con personalidades",
-                    "Documentales de proyectos"
-                ],
-                socialUrl: "#",
-                icon: "youtube",
-                color: "#FF0000"
-            },
-            {
-                title: "LinkedIn - Red Profesional y Networking",
-                platform: "LinkedIn",
-                followers: "12K+ conexiones",
-                type: "Contenido Profesional",
-                description: "Plataforma para networking profesional y contenido corporativo. Artículos sobre liderazgo, arquitectura sostenible y tendencias en medios de comunicación.",
-                highlights: [
-                    "Artículos sobre liderazgo",
-                    "Networking con profesionales",
-                    "Contenido sobre arquitectura",
-                    "Oportunidades de colaboración"
-                ],
-                socialUrl: "#",
-                icon: "linkedin",
-                color: "#0077B5"
-            },
-            {
-                title: "Facebook - Comunidad y Eventos",
-                platform: "Facebook",
-                followers: "20K+ seguidores",
-                type: "Comunidad Social",
-                description: "Página oficial para mantener contacto con la comunidad, compartir eventos, noticias y crear un espacio de interacción con fans y seguidores de todas las edades.",
-                highlights: [
-                    "Eventos y apariciones públicas",
-                    "Noticias y actualizaciones",
-                    "Interacción con la comunidad",
-                    "Contenido familiar y accesible"
-                ],
-                socialUrl: "#",
-                icon: "facebook",
-                color: "#1877F2"
-            },
-            {
-                title: "Twitter/X - Noticias y Opiniones",
-                platform: "Twitter/X",
-                followers: "18K+ seguidores",
-                type: "Microblogging",
-                description: "Plataforma para compartir opiniones, noticias del momento y participar en conversaciones relevantes sobre arquitectura, medios y actualidad nacional e internacional.",
-                highlights: [
-                    "Opiniones sobre actualidad",
-                    "Noticias del sector",
-                    "Participación en debates",
-                    "Conexión con influencers"
-                ],
-                socialUrl: "#",
-                icon: "twitter",
-                color: "#1DA1F2"
-            }
+        //   ,
+        //     {
+        //         title: "TikTok - Contenido Viral y Entretenimiento",
+        //         platform: "TikTok",
+        //         followers: "15K+ seguidores",
+        //         type: "Videos Cortos",
+        //         description: "Videos dinámicos y entretenidos que muestran la personalidad carismática de David. Desde challenges hasta contenido educativo sobre medios y arquitectura, siempre con un toque único.",
+        //         highlights: [
+        //             "Videos virales de entretenimiento",
+        //             "Tips de presentación y comunicación",
+        //             "Behind the scenes de TV",
+        //             "Tendencias y challenges populares"
+        //         ],
+        //         socialUrl: "#",
+        //         icon: "tiktok",
+        //         color: "#000000"
+        //     },
+        //     {
+        //         title: "YouTube - Contenido Educativo y Profesional",
+        //         platform: "YouTube",
+        //         followers: "8K+ suscriptores",
+        //         type: "Videos Largos",
+        //         description: "Canal dedicado a contenido educativo sobre comunicación, arquitectura y desarrollo personal. Tutoriales, entrevistas y documentales que inspiran y educan a la audiencia.",
+        //         highlights: [
+        //             "Tutoriales de comunicación efectiva",
+        //             "Tours arquitectónicos detallados",
+        //             "Entrevistas con personalidades",
+        //             "Documentales de proyectos"
+        //         ],
+        //         socialUrl: "#",
+        //         icon: "youtube",
+        //         color: "#FF0000"
+        //     },
+        //     {
+        //         title: "LinkedIn - Red Profesional y Networking",
+        //         platform: "LinkedIn",
+        //         followers: "12K+ conexiones",
+        //         type: "Contenido Profesional",
+        //         description: "Plataforma para networking profesional y contenido corporativo. Artículos sobre liderazgo, arquitectura sostenible y tendencias en medios de comunicación.",
+        //         highlights: [
+        //             "Artículos sobre liderazgo",
+        //             "Networking con profesionales",
+        //             "Contenido sobre arquitectura",
+        //             "Oportunidades de colaboración"
+        //         ],
+        //         socialUrl: "#",
+        //         icon: "linkedin",
+        //         color: "#0077B5"
+        //     },
+        //     {
+        //         title: "Facebook - Comunidad y Eventos",
+        //         platform: "Facebook",
+        //         followers: "20K+ seguidores",
+        //         type: "Comunidad Social",
+        //         description: "Página oficial para mantener contacto con la comunidad, compartir eventos, noticias y crear un espacio de interacción con fans y seguidores de todas las edades.",
+        //         highlights: [
+        //             "Eventos y apariciones públicas",
+        //             "Noticias y actualizaciones",
+        //             "Interacción con la comunidad",
+        //             "Contenido familiar y accesible"
+        //         ],
+        //         socialUrl: "#",
+        //         icon: "facebook",
+        //         color: "#1877F2"
+        //     },
+        //     {
+        //         title: "Twitter/X - Noticias y Opiniones",
+        //         platform: "Twitter/X",
+        //         followers: "18K+ seguidores",
+        //         type: "Microblogging",
+        //         description: "Plataforma para compartir opiniones, noticias del momento y participar en conversaciones relevantes sobre arquitectura, medios y actualidad nacional e internacional.",
+        //         highlights: [
+        //             "Opiniones sobre actualidad",
+        //             "Noticias del sector",
+        //             "Participación en debates",
+        //             "Conexión con influencers"
+        //         ],
+        //         socialUrl: "#",
+        //         icon: "twitter",
+        //         color: "#1DA1F2"
+        //     }
         ];
 
         return digitalContent.map(content => `
