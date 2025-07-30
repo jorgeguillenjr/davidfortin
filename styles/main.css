@@ -744,28 +744,9 @@ section {
 
 .footer-content {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   gap: var(--spacing-md);
-  flex-wrap: wrap;
-}
-
-.footer-left {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.footer-encode-logo {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
-  transition: var(--transition-normal);
-}
-
-.footer-encode-logo:hover {
-  filter: brightness(0) invert(1) opacity(0.8);
 }
 
 .footer-logo {
@@ -777,7 +758,6 @@ section {
 .footer p {
   color: rgba(255, 255, 255, 0.7);
   margin: 0;
-}
 }
 
 /* Animaciones */
@@ -875,19 +855,6 @@ section {
   .filter-btn {
     font-size: 0.9rem;
     padding: var(--spacing-xs) var(--spacing-sm);
-  }
-  
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .footer-left {
-    justify-content: center;
-  }
-  
-  .footer-encode-logo {
-    height: 32px;
   }
 }
 
