@@ -226,7 +226,7 @@ class RadioModal {
             const portfolioImage = e.target.closest('.portfolio-image');
             const portfolioItem = portfolioImage?.closest('.portfolio-item[data-category="medios"]');
             
-            if (portfolioItem && portfolioItem.querySelector('h3')?.textContent === 'Locutor de Radio') {
+            if (portfolioItem && portfolioItem.querySelector('h3')?.textContent === 'Locutor Comercial') {
                 e.preventDefault();
                 e.stopPropagation();
                 this.openModal();
