@@ -131,6 +131,21 @@
   }
 }
 
+/* Animación de fade out para mensajes */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.form-message-fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
 /* Loading spinner para botones */
 .btn-loading {
   position: relative;
