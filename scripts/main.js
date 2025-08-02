@@ -206,19 +206,16 @@ function initializeContactForm() {
                 const success = await sendEmailWithFormspree(form);
                 
                 if (success) {
-                    showFormMessage('¡Mensaje enviado correctamente! Te contactaremos pronto.', 'success');
-                    
-                    // Resetear formulario
-                    setTimeout(() => {
-                        form.reset();
-                    }, 2000);
+                    // El éxito se maneja dentro de sendEmailWithFormspree
+                    // incluyendo la redirección a gracias.html
+                    form.reset();
                 } else {
                     throw new Error('Error en el envío');
                 }
                 
             } catch (error) {
                 console.error('Error al enviar el mensaje:', error);
-                showFormMessage('Hubo un error al enviar el mensaje. Por favor, contacta directamente: Teléfono: +504 8882-1888 o Email: cotiza@davidfortin.me', 'error');
+                // El error se maneja dentro de sendEmailWithFormspree
             } finally {
                 // Restaurar botón
                 submitButton.textContent = originalText;
@@ -246,28 +243,39 @@ async function sendEmailWithFormspree(form) {
     try {
         const formData = new FormData(form);
         
-        showFormMessage('Enviando mensaje...', 'info');
+        showFormMessage('Procesando envío...', 'info');
         
-        // Preparar datos para Formspree
-        const formspreeData = new FormData();
-        formspreeData.append('name', formData.get('from_name'));
-        formspreeData.append('email', formData.get('from_email'));
-        formspreeData.append('phone', formData.get('phone') || 'No proporcionado');
-        formspreeData.append('subject', formData.get('subject'));
-        formspreeData.append('message', formData.get('message'));
-        formspreeData.append('_replyto', formData.get('from_email'));
-        formspreeData.append('_subject', `Contacto desde davidfortin.me: ${formData.get('subject')}`);
+        // Preparar datos JSON para Formspree
+        const formspreeData = {
+            name: formData.get('from_name'),
+            email: formData.get('from_email'),
+            phone: formData.get('phone') || 'No proporcionado',
+            subject: formData.get('subject'),
+            message: formData.get('message'),
+            _replyto: formData.get('from_email'),
+            _subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`
+        };
         
         const response = await fetch(FORMSPREE_CONFIG.endpoint, {
             method: FORMSPREE_CONFIG.method,
-            body: formspreeData,
+            body: JSON.stringify(formspreeData),
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         });
         
         if (response.ok) {
             console.log('Email enviado exitosamente con Formspree');
+            
+            // Mostrar mensaje de éxito
+            showFormMessage('¡Mensaje enviado correctamente! Redirigiendo a página de agradecimiento...', 'success');
+            
+            // Redireccionar después de 2 segundos
+            setTimeout(() => {
+                window.location.href = 'gracias.html';
+            }, 2000);
+            
             return true;
         } else {
             const errorData = await response.json();
@@ -283,6 +291,16 @@ async function sendEmailWithFormspree(form) {
         
     } catch (error) {
         console.error('Error al enviar con Formspree:', error);
+        
+        // Mostrar error específico
+        if (error.message.includes('validación')) {
+            showFormMessage(`Error de validación: ${error.message}`, 'error');
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+            showFormMessage('Error de conexión. Por favor, verifica tu conexión a internet e intenta nuevamente.', 'error');
+        } else {
+            showFormMessage('Error al enviar el mensaje. Contacta directamente: Teléfono: +504 8882-1888 o Email: cotiza@davidfortin.me', 'error');
+        }
+        
         return false;
     }
 }
