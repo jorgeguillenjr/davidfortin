@@ -146,6 +146,330 @@
 .form-message-fade-out {
     animation: fadeOut 0.5s ease-out forwards;
 }
+
+/* Estilos para Modal de Agradecimiento */
+.thank-you-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.thank-you-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.thank-you-modal-content {
+    background-color: var(--background-white);
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.8) translateY(50px);
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.thank-you-modal-overlay.active .thank-you-modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.thank-you-modal-header {
+    padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-lg);
+    text-align: center;
+    background: linear-gradient(135deg, var(--background-white) 0%, var(--secondary-color) 100%);
+    border-radius: 20px 20px 0 0;
+    position: relative;
+}
+
+.thank-you-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-lg);
+    color: #28a745;
+    animation: checkmarkPulse 0.6s ease-out;
+}
+
+.thank-you-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes checkmarkPulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.thank-you-modal-header h2 {
+    color: var(--text-primary);
+    margin: 0;
+    font-size: 2rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+}
+
+.thank-you-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 2rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-normal);
+    font-weight: 300;
+}
+
+.thank-you-close:hover {
+    background-color: rgba(44, 44, 44, 0.08);
+    color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.thank-you-modal-body {
+    padding: 0 var(--spacing-xl) var(--spacing-2xl);
+}
+
+.thank-you-content {
+    text-align: center;
+}
+
+.thank-you-content h3 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.5rem;
+    font-family: var(--font-display);
+}
+
+.thank-you-subtitle {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    font-weight: 500;
+    margin-bottom: var(--spacing-lg);
+}
+
+.thank-you-description {
+    margin-bottom: var(--spacing-xl);
+    text-align: left;
+}
+
+.thank-you-description p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+.thank-you-description p strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.thank-you-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.social-links-modal {
+    margin-bottom: var(--spacing-xl);
+}
+
+.social-links-modal h4 {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.social-icons-modal {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.social-link-modal {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-md);
+    background-color: var(--background-light);
+    border-radius: 25px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: var(--transition-normal);
+    text-decoration: none;
+    border: 1px solid var(--border-light);
+}
+
+.social-link-modal:hover {
+    background-color: var(--primary-color);
+    color: var(--background-white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.social-link-modal svg {
+    width: 18px;
+    height: 18px;
+}
+
+.contact-reminder {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border: 1px solid #c3e6cb;
+    border-radius: 12px;
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    text-align: left;
+}
+
+.contact-reminder-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-reminder-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.contact-reminder p {
+    margin: 0;
+    color: #155724;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.contact-reminder strong {
+    font-weight: 600;
+}
+
+/* Responsive para Modal de Agradecimiento */
+@media (max-width: 768px) {
+    .thank-you-modal-content {
+        width: 95%;
+        margin: var(--spacing-sm);
+    }
+    
+    .thank-you-modal-header {
+        padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .thank-you-modal-header h2 {
+        font-size: 1.7rem;
+    }
+    
+    .thank-you-modal-body {
+        padding: 0 var(--spacing-lg) var(--spacing-xl);
+    }
+    
+    .thank-you-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .social-icons-modal {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .social-link-modal {
+        width: 100%;
+        max-width: 200px;
+        justify-content: center;
+    }
+    
+    .contact-reminder {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .thank-you-modal-content {
+        width: 98%;
+        max-height: 95vh;
+    }
+    
+    .thank-you-modal-header {
+        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-sm);
+    }
+    
+    .thank-you-modal-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .thank-you-modal-body {
+        padding: 0 var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .thank-you-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .thank-you-content h3 {
+        font-size: 1.3rem;
+    }
+    
+    .thank-you-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .thank-you-description p {
+        font-size: 1rem;
+    }
+}
+
 /* Loading spinner para botones */
 .btn-loading {
   position: relative;

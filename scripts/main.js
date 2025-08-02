@@ -206,12 +206,13 @@ function initializeContactForm() {
                 const success = await sendEmailWithFormspree(form);
                 
                 if (success) {
-                    showFormMessage('¡Mensaje enviado correctamente! Te contactaremos pronto.', 'success');
+                    // Mostrar ventana de agradecimiento
+                    showThankYouModal();
                     
-                    // Resetear formulario
+                    // Resetear formulario después de un momento
                     setTimeout(() => {
                         form.reset();
-                    }, 2000);
+                    }, 1000);
                 } else {
                     throw new Error('Error en el envío');
                 }
@@ -424,6 +425,117 @@ function showFormMessage(message, type) {
     }, 10000);
 }
 
+// === VENTANA DE AGRADECIMIENTO ===
+function showThankYouModal() {
+    // Crear modal de agradecimiento
+    const modalHTML = `
+        <div class="thank-you-modal-overlay" id="thankYouModal">
+            <div class="thank-you-modal-content">
+                <div class="thank-you-modal-header">
+                    <div class="thank-you-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 12l2 2 4-4"/>
+                            <circle cx="12" cy="12" r="10"/>
+                        </svg>
+                    </div>
+                    <h2>¡Mensaje Enviado!</h2>
+                    <button class="thank-you-close" onclick="closeThankYouModal()" aria-label="Cerrar">×</button>
+                </div>
+                <div class="thank-you-modal-body">
+                    <div class="thank-you-content">
+                        <h3>¡Gracias por contactarme!</h3>
+                        <p class="thank-you-subtitle">Tu mensaje ha sido enviado correctamente</p>
+                        <div class="thank-you-description">
+                            <p><strong>Te contactaré en las próximas 24 horas.</strong></p>
+                            <p>He recibido tu mensaje y me pondré en contacto contigo lo antes posible. Normalmente respondo en un plazo de 24 horas durante días hábiles.</p>
+                            <p>Mientras tanto, puedes seguirme en mis redes sociales para estar al día de mis últimos proyectos.</p>
+                        </div>
+                        <div class="thank-you-actions">
+                            <button class="btn-primary" onclick="closeThankYouModal()">Continuar Navegando</button>
+                            <button class="btn-secondary" onclick="closeThankYouModal(); setTimeout(() => scrollToSection('portfolio'), 300);">Ver Portfolio</button>
+                        </div>
+                        <div class="social-links-modal">
+                            <h4>Sígueme en:</h4>
+                            <div class="social-icons-modal">
+                                <a href="https://www.instagram.com/davidjesusfortin/" target="_blank" class="social-link-modal">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="white"/>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="white" stroke-width="2"/>
+                                    </svg>
+                                    Instagram
+                                </a>
+                                <a href="#" target="_blank" class="social-link-modal">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                    LinkedIn
+                                </a>
+                                <a href="#" target="_blank" class="social-link-modal">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                    </svg>
+                                    Twitter
+                                </a>
+                            </div>
+                        </div>
+                        <div class="contact-reminder">
+                            <div class="contact-reminder-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12,6 12,12 16,14"/>
+                                </svg>
+                            </div>
+                            <p><strong>Recordatorio:</strong> Te contactaré dentro de las próximas 24 horas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Insertar modal en el DOM
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Mostrar modal con animación
+    const modal = document.getElementById('thankYouModal');
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 100);
+    
+    // Prevenir scroll del body
+    document.body.style.overflow = 'hidden';
+    
+    // Cerrar con tecla Escape
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            closeThankYouModal();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+    
+    // Cerrar al hacer clic en el overlay
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeThankYouModal();
+        }
+    });
+}
+
+function closeThankYouModal() {
+    const modal = document.getElementById('thankYouModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Remover modal después de la animación
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
 // === EFECTOS DE SCROLL ===
 function initializeScrollEffects() {
     let ticking = false;
@@ -518,6 +630,7 @@ function debounce(func, wait, immediate) {
 // Funciones globales para uso en HTML
 window.scrollToSection = scrollToSection;
 window.goToPortfolioFilter = goToPortfolioFilter;
+window.closeThankYouModal = closeThankYouModal;
 
 // Manejo de errores global
 window.addEventListener('error', function(e) {
