@@ -223,22 +223,22 @@ function initializeContactForm() {
                 
                 if (success) {
                     // Mostrar mensaje de éxito brevemente
-                    showFormMessage('¡Mensaje enviado correctamente! Redirigiendo...', 'success');
+                    showFormMessage('¡Mensaje enviado correctamente!', 'success');
                     
                     // Resetear formulario
                     form.reset();
                     
-                    // Redirigir a página de agradecimiento después de 2 segundos
+                    // Mostrar mensaje de confirmación
                     setTimeout(() => {
-                        window.location.href = 'gracias.html';
-                    }, 1500);
+                        showFormMessage('El formulario se ha enviado. Si no es redirigido automáticamente, puede continuar navegando.', 'info');
+                    }, 2000);
                 } else {
                     throw new Error('Error en el envío');
                 }
                 
             } catch (error) {
                 console.error('Error al enviar el mensaje:', error);
-                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente por WhatsApp: +504 8882-1888', 'error');
+                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente al teléfono: +504 8882-1888 o email: cotiza@davidfortin.me', 'error');
             } finally {
                 // Restaurar botón
                 submitButton.textContent = originalText;
@@ -264,63 +264,21 @@ function initializeContactForm() {
 // Función para enviar email con FormSubmit
 async function sendEmailWithFormSubmit(formData) {
     try {
-        // Usar fetch para envío con FormSubmit
-        const response = await fetch('https://formsubmit.co/cotiza@davidfortin.me', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                name: formData.get('from_name'),
-                email: formData.get('from_email'),
-                phone: formData.get('phone'),
-                phone: formData.get('phone'),
-                subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`,
-                message: formData.get('message'),
-                _captcha: false,
-                _template: 'table'
-            })
-        });
-
-        if (response.ok) {
-            return true;
-        } else {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        
-    } catch (error) {
-        console.error('Error en sendEmailWithFormSubmit:', error);
-        
-        // Fallback: usar método de formulario tradicional
-        try {
-            return await sendEmailWithFormMethod(formData);
-        } catch (fallbackError) {
-            console.error('Error en fallback:', fallbackError);
-            return false;
-        }
-    }
-}
-
-// Método alternativo usando formulario tradicional
-async function sendEmailWithFormMethod(formData) {
-    return new Promise((resolve) => {
-        // Crear formulario temporal para envío
+        // Crear formulario para envío directo con FormSubmit
         const tempForm = document.createElement('form');
         tempForm.method = 'POST';
         tempForm.action = 'https://formsubmit.co/cotiza@davidfortin.me';
-        tempForm.target = '_blank'; // Abrir en nueva ventana
         tempForm.style.display = 'none';
         
         // Preparar datos para FormSubmit
         const submitData = {
             name: formData.get('from_name'),
             email: formData.get('from_email'),
-            phone: formData.get('phone'),
-            subject: `Contacto desde davidfortin.com: ${formData.get('subject')}`,
+            phone: formData.get('phone') || 'No proporcionado',
+            subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`,
             message: formData.get('message'),
             _next: window.location.origin + '/gracias.html',
-            _captcha: false,
+            _captcha: 'false',
             _template: 'table'
         };
         
@@ -344,9 +302,14 @@ async function sendEmailWithFormMethod(formData) {
             }
         }, 1000);
         
-        resolve(true);
-    });
+        return true;
+        
+    } catch (error) {
+        console.error('Error en sendEmailWithFormSubmit:', error);
+        return false;
+    }
 }
+
 
 function validateForm(form) {
     const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');

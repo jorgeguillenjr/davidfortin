@@ -350,15 +350,15 @@
           <form class="contact-form" id="contactForm">
             <div class="form-group">
               <label for="name">Nombre</label>
-              <input type="text" id="name" name="from_name" required placeholder="Tu nombre completo">
+              <input type="text" id="name" name="from_name" required placeholder="Tu nombre completo" maxlength="100">
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="from_email" required placeholder="tu@email.com">
+              <input type="email" id="email" name="from_email" required placeholder="tu@email.com" maxlength="100">
             </div>
             <div class="form-group">
               <label for="phone">Teléfono</label>
-              <input type="tel" id="phone" name="phone" placeholder="+504 0000-0000">
+              <input type="tel" id="phone" name="phone" placeholder="+504 0000-0000" maxlength="20">
             </div>
             <div class="form-group">
               <label for="subject">Asunto</label>
@@ -373,7 +373,7 @@
             </div>
             <div class="form-group">
               <label for="message">Mensaje</label>
-              <textarea id="message" name="message" rows="5" required placeholder="Escribe tu mensaje aquí..."></textarea>
+              <textarea id="message" name="message" rows="5" required placeholder="Escribe tu mensaje aquí..." maxlength="1000"></textarea>
             </div>
             <button type="submit" class="btn-primary">Enviar Mensaje</button>
           </form>
