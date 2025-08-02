@@ -222,16 +222,13 @@ function initializeContactForm() {
                 const success = await sendEmailWithFormSubmit(formData);
                 
                 if (success) {
-                    // Mostrar mensaje de éxito brevemente
-                    showFormMessage('¡Mensaje enviado correctamente!', 'success');
+                    // Mostrar mensaje de confirmación inmediato
+                    showFormMessage('¡Mensaje enviado correctamente! Serás redirigido a la página de confirmación en unos segundos.', 'success');
                     
-                    // Resetear formulario
-                    form.reset();
-                    
-                    // Mostrar mensaje de confirmación
+                    // Resetear formulario después de mostrar el mensaje
                     setTimeout(() => {
-                        showFormMessage('El formulario se ha enviado. Si no es redirigido automáticamente, puede continuar navegando.', 'info');
-                    }, 2000);
+                        form.reset();
+                    }, 1000);
                 } else {
                     throw new Error('Error en el envío');
                 }
@@ -264,43 +261,42 @@ function initializeContactForm() {
 // Función para enviar email con FormSubmit
 async function sendEmailWithFormSubmit(formData) {
     try {
-        // Crear formulario para envío directo con FormSubmit
-        const tempForm = document.createElement('form');
-        tempForm.method = 'POST';
-        tempForm.action = 'https://formsubmit.co/cotiza@davidfortin.me';
-        tempForm.style.display = 'none';
+        // Mostrar mensaje de confirmación primero
+        showFormMessage('Procesando envío...', 'info');
         
-        // Preparar datos para FormSubmit
-        const submitData = {
-            name: formData.get('from_name'),
-            email: formData.get('from_email'),
-            phone: formData.get('phone') || 'No proporcionado',
-            subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`,
-            message: formData.get('message'),
-            _next: window.location.origin + '/gracias.html',
-            _captcha: 'false',
-            _template: 'table'
-        };
-        
-        // Agregar campos al formulario
-        Object.keys(submitData).forEach(key => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = submitData[key];
-            tempForm.appendChild(input);
-        });
-        
-        // Enviar formulario
-        document.body.appendChild(tempForm);
-        tempForm.submit();
-        
-        // Limpiar formulario después de un momento
         setTimeout(() => {
-            if (tempForm.parentNode) {
-                tempForm.remove();
-            }
-        }, 1000);
+            // Crear formulario para envío directo con FormSubmit
+            const tempForm = document.createElement('form');
+            tempForm.method = 'POST';
+            tempForm.action = 'https://formsubmit.co/cotiza@davidfortin.me';
+            tempForm.style.display = 'none';
+            
+            // Preparar datos para FormSubmit
+            const submitData = {
+                name: formData.get('from_name'),
+                email: formData.get('from_email'),
+                phone: formData.get('phone') || 'No proporcionado',
+                subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`,
+                message: formData.get('message'),
+                _next: window.location.origin + '/gracias.html',
+                _captcha: 'false',
+                _template: 'table'
+            };
+            
+            // Agregar campos al formulario
+            Object.keys(submitData).forEach(key => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = submitData[key];
+                tempForm.appendChild(input);
+            });
+            
+            // Enviar formulario
+            document.body.appendChild(tempForm);
+            tempForm.submit();
+            
+        }, 1500); // Dar tiempo para que se vea el mensaje
         
         return true;
         
@@ -397,15 +393,55 @@ function showFormMessage(message, type) {
     messageDiv.className = `form-${type}`;
     messageDiv.textContent = message;
     
-    const form = document.getElementById('contactForm');
-    form.insertBefore(messageDiv, form.firstChild);
+    // Agregar estilos para mejor visibilidad
+    messageDiv.style.position = 'relative';
+    messageDiv.style.zIndex = '10';
+    messageDiv.style.marginBottom = '20px';
+    messageDiv.style.padding = '15px';
+    messageDiv.style.borderRadius = '8px';
+    messageDiv.style.fontWeight = '500';
+    messageDiv.style.fontSize = '1rem';
+    messageDiv.style.lineHeight = '1.5';
+    messageDiv.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
     
-    // Auto-remover después de 8 segundos
+    // Colores específicos según el tipo
+    if (type === 'success') {
+        messageDiv.style.backgroundColor = '#d4edda';
+        messageDiv.style.color = '#155724';
+        messageDiv.style.border = '1px solid #c3e6cb';
+    } else if (type === 'error') {
+        messageDiv.style.backgroundColor = '#f8d7da';
+        messageDiv.style.color = '#721c24';
+        messageDiv.style.border = '1px solid #f5c6cb';
+    } else if (type === 'info') {
+        messageDiv.style.backgroundColor = '#d1ecf1';
+        messageDiv.style.color = '#0c5460';
+        messageDiv.style.border = '1px solid #bee5eb';
+    }
+    
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.insertBefore(messageDiv, form.firstChild);
+        
+        // Scroll suave hacia el mensaje
+        messageDiv.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest' 
+        });
+    }
+    
+    // Auto-remover después de 10 segundos (más tiempo para leer)
     setTimeout(() => {
         if (messageDiv.parentNode) {
-            messageDiv.remove();
+            messageDiv.style.opacity = '0';
+            messageDiv.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 500);
         }
-    }, 8000);
+    }, 10000);
 }
 
 // === EFECTOS DE SCROLL ===
