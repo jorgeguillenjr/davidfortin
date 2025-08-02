@@ -4,17 +4,17 @@ Sitio web profesional para David Fortín, presentador de TV, modelo y arquitecto
 
 ## Configuración del Formulario de Contacto
 
-El sitio utiliza **FormSubmit** para el envío de emails. Los mensajes se envían directamente a `davidfortin04048@gmail.com`.
+El sitio utiliza **FormSubmit** para el envío de emails. Los mensajes se envían directamente a `cotiza@davidfortin.me`.
 
 ### Características del Formulario:
-- ✅ Envío real de emails a davidfortin04048@gmail.com
+- ✅ Envío real de emails a cotiza@davidfortin.me
 - ✅ Validación en tiempo real
 - ✅ Mensajes de confirmación
 - ✅ Página de agradecimiento
 - ✅ Diseño responsive
 
 ### Información de Contacto:
-- **Email**: davidfortin04048@gmail.com
+- **Email**: cotiza@davidfortin.me
 - **Teléfono**: +504 8882-1888
 - **Ubicación**: Tegucigalpa, Honduras
 
@@ -22,7 +22,7 @@ El sitio utiliza **FormSubmit** para el envío de emails. Los mensajes se envía
 
 #### 1. FormSubmit (Activo)
 - **Servicio**: https://formsubmit.co/
-- **Destino**: davidfortin04048@gmail.com
+- **Destino**: cotiza@davidfortin.me
 - **Configuración**: Sin registro requerido
 - **Características**: 
   - Envío directo
@@ -73,4 +73,4 @@ Para configurar EmailJS como alternativa:
 3. Para desarrollo local, usar un servidor HTTP simple
 
 ### Contacto:
-Los mensajes del formulario se envían automáticamente a **davidfortin04048@gmail.com**.
+Los mensajes del formulario se envían automáticamente a **cotiza@davidfortin.me**.

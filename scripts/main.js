@@ -265,7 +265,7 @@ function initializeContactForm() {
 async function sendEmailWithFormSubmit(formData) {
     try {
         // Usar fetch para envío con FormSubmit
-        const response = await fetch('https://formsubmit.co/davidfortin04048@gmail.com', {
+        const response = await fetch('https://formsubmit.co/cotiza@davidfortin.me', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -276,7 +276,7 @@ async function sendEmailWithFormSubmit(formData) {
                 email: formData.get('from_email'),
                 phone: formData.get('phone'),
                 phone: formData.get('phone'),
-                subject: `Contacto desde davidfortin.com: ${formData.get('subject')}`,
+                subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`,
                 message: formData.get('message'),
                 _captcha: false,
                 _template: 'table'
@@ -308,7 +308,7 @@ async function sendEmailWithFormMethod(formData) {
         // Crear formulario temporal para envío
         const tempForm = document.createElement('form');
         tempForm.method = 'POST';
-        tempForm.action = 'https://formsubmit.co/davidfortin04048@gmail.com';
+        tempForm.action = 'https://formsubmit.co/cotiza@davidfortin.me';
         tempForm.target = '_blank'; // Abrir en nueva ventana
         tempForm.style.display = 'none';
         
