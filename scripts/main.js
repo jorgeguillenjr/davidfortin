@@ -9,7 +9,7 @@ let scrollPosition = 0;
 const EMAILJS_CONFIG = {
     serviceId: 'service_davidfortin',
     templateId: 'template_contact',
-    publicKey: 'YOUR_PUBLIC_KEY_HERE' // Se debe configurar
+    publicKey: '8a2ec5d2003258e47f2b675385cba1f9' // Se debe configurar
 };
 
 // Inicialización cuando el DOM está listo
