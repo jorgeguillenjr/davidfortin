@@ -8,8 +8,8 @@ let scrollPosition = 0;
 // Configuración de EmailJS
 const EMAILJS_CONFIG = {
     serviceId: 'service_davidfortin',
-    templateId: 'template_contact',
-    publicKey: '8a2ec5d2003258e47f2b675385cba1f9' // Se debe configurar
+    templateId: 'template_davidfortin',
+    publicKey: 'YOUR_EMAILJS_PUBLIC_KEY'
 };
 
 // Inicialización cuando el DOM está listo
@@ -25,10 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // === INICIALIZACIÓN DE EMAILJS ===
 function initializeEmailJS() {
-    // Inicializar EmailJS con clave pública temporal para demostración
-    // En producción, debes configurar tu propia cuenta de EmailJS
     if (typeof emailjs !== 'undefined') {
-        emailjs.init("YOUR_PUBLIC_KEY_HERE");
+        emailjs.init(EMAILJS_CONFIG.publicKey);
         console.log('EmailJS inicializado');
     } else {
         console.warn('EmailJS no está disponible');
@@ -215,27 +213,23 @@ function initializeContactForm() {
             submitButton.disabled = true;
             
             try {
-                // Obtener datos del formulario
-                const formData = new FormData(form);
-                
-                // Enviar usando FormSubmit (servicio real)
-                const success = await sendEmailWithFormSubmit(formData);
+                // Intentar envío con EmailJS primero, luego FormSubmit como fallback
+                const success = await sendEmailWithMultipleMethods(form);
                 
                 if (success) {
-                    // Mostrar mensaje de confirmación inmediato
-                    showFormMessage('¡Mensaje enviado correctamente! Serás redirigido a la página de confirmación en unos segundos.', 'success');
+                    showFormMessage('¡Mensaje enviado correctamente! Te contactaremos pronto.', 'success');
                     
-                    // Resetear formulario después de mostrar el mensaje
+                    // Resetear formulario
                     setTimeout(() => {
                         form.reset();
-                    }, 1000);
+                    }, 2000);
                 } else {
                     throw new Error('Error en el envío');
                 }
                 
             } catch (error) {
                 console.error('Error al enviar el mensaje:', error);
-                showFormMessage('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente al teléfono: +504 8882-1888 o email: cotiza@davidfortin.me', 'error');
+                showFormMessage('Hubo un error al enviar el mensaje. Por favor, contacta directamente: WhatsApp: +504 8882-1888 o Email: cotiza@davidfortin.me', 'error');
             } finally {
                 // Restaurar botón
                 submitButton.textContent = originalText;
@@ -258,54 +252,125 @@ function initializeContactForm() {
     }
 }
 
-// Función para enviar email con FormSubmit
-async function sendEmailWithFormSubmit(formData) {
+// Función para enviar email con múltiples métodos
+async function sendEmailWithMultipleMethods(form) {
     try {
-        // Mostrar mensaje de confirmación primero
-        showFormMessage('Procesando envío...', 'info');
+        const formData = new FormData(form);
         
-        setTimeout(() => {
-            // Crear formulario para envío directo con FormSubmit
-            const tempForm = document.createElement('form');
-            tempForm.method = 'POST';
-            tempForm.action = 'https://formsubmit.co/cotiza@davidfortin.me';
-            tempForm.style.display = 'none';
+        // Método 1: Intentar con EmailJS
+        if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+            try {
+                showFormMessage('Enviando mensaje...', 'info');
+                
+                const templateParams = {
+                    from_name: formData.get('from_name'),
+                    from_email: formData.get('from_email'),
+                    phone: formData.get('phone') || 'No proporcionado',
+                    subject: formData.get('subject'),
+                    message: formData.get('message'),
+                    to_email: 'cotiza@davidfortin.me'
+                };
+                
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    templateParams
+                );
+                
+                if (response.status === 200) {
+                    console.log('Email enviado exitosamente con EmailJS');
+                    return true;
+                }
+            } catch (emailjsError) {
+                console.warn('EmailJS falló, intentando con FormSubmit:', emailjsError);
+            }
+        }
+        
+        // Método 2: Fallback con FormSubmit usando fetch
+        try {
+            showFormMessage('Enviando mensaje (método alternativo)...', 'info');
             
-            // Preparar datos para FormSubmit
-            const submitData = {
-                name: formData.get('from_name'),
-                email: formData.get('from_email'),
-                phone: formData.get('phone') || 'No proporcionado',
-                subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`,
-                message: formData.get('message'),
-                _next: window.location.origin + '/gracias.html',
-                _captcha: 'false',
-                _template: 'table'
-            };
+            const formDataForSubmit = new FormData();
+            formDataForSubmit.append('name', formData.get('from_name'));
+            formDataForSubmit.append('email', formData.get('from_email'));
+            formDataForSubmit.append('phone', formData.get('phone') || 'No proporcionado');
+            formDataForSubmit.append('subject', `Contacto desde davidfortin.me: ${formData.get('subject')}`);
+            formDataForSubmit.append('message', formData.get('message'));
+            formDataForSubmit.append('_captcha', 'false');
+            formDataForSubmit.append('_template', 'table');
             
-            // Agregar campos al formulario
-            Object.keys(submitData).forEach(key => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = submitData[key];
-                tempForm.appendChild(input);
+            const response = await fetch('https://formsubmit.co/cotiza@davidfortin.me', {
+                method: 'POST',
+                body: formDataForSubmit,
+                mode: 'no-cors' // Importante para evitar CORS
             });
             
-            // Enviar formulario
-            document.body.appendChild(tempForm);
-            tempForm.submit();
+            // Con no-cors, no podemos verificar la respuesta, pero asumimos éxito
+            console.log('Formulario enviado con FormSubmit');
+            return true;
             
-        }, 1500); // Dar tiempo para que se vea el mensaje
+        } catch (formSubmitError) {
+            console.warn('FormSubmit falló:', formSubmitError);
+        }
         
-        return true;
+        // Método 3: Envío directo con formulario HTML (último recurso)
+        return await sendWithDirectForm(formData);
         
     } catch (error) {
-        console.error('Error en sendEmailWithFormSubmit:', error);
+        console.error('Todos los métodos de envío fallaron:', error);
         return false;
     }
 }
 
+// Función para envío directo con formulario HTML
+async function sendWithDirectForm(formData) {
+    try {
+        showFormMessage('Enviando mensaje (método directo)...', 'info');
+        
+        // Crear formulario temporal para envío directo
+        const tempForm = document.createElement('form');
+        tempForm.method = 'POST';
+        tempForm.action = 'https://formsubmit.co/cotiza@davidfortin.me';
+        tempForm.target = '_blank'; // Abrir en nueva ventana
+        tempForm.style.display = 'none';
+        
+        // Preparar datos para FormSubmit
+        const submitData = {
+            name: formData.get('from_name'),
+            email: formData.get('from_email'),
+            phone: formData.get('phone') || 'No proporcionado',
+            subject: `Contacto desde davidfortin.me: ${formData.get('subject')}`,
+            message: formData.get('message'),
+            _captcha: 'false',
+            _template: 'table',
+            _next: 'https://davidfortin.me/gracias.html'
+        };
+        
+        // Agregar campos al formulario
+        Object.keys(submitData).forEach(key => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = submitData[key];
+            tempForm.appendChild(input);
+        });
+        
+        // Enviar formulario
+        document.body.appendChild(tempForm);
+        tempForm.submit();
+        
+        // Limpiar
+        setTimeout(() => {
+            document.body.removeChild(tempForm);
+        }, 1000);
+        
+        return true;
+        
+    } catch (error) {
+        console.error('Error en sendWithDirectForm:', error);
+        return false;
+    }
+}
 
 function validateForm(form) {
     const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');

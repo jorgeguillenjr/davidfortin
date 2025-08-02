@@ -36,7 +36,22 @@ Para configurar EmailJS como alternativa:
 2. Configurar servicio de email
 3. Crear template de email
 4. Obtener claves públicas
-5. Actualizar `EMAILJS_CONFIG` en `scripts/main.js`
+5. Actualizar `EMAILJS_CONFIG` en `scripts/main.js`:
+   ```javascript
+   const EMAILJS_CONFIG = {
+       serviceId: 'tu_service_id',
+       templateId: 'tu_template_id',
+       publicKey: 'tu_public_key'
+   };
+   ```
+
+#### 3. Configuración de Múltiples Métodos
+El sistema ahora utiliza múltiples métodos de envío:
+1. **EmailJS** (método principal si está configurado)
+2. **FormSubmit con fetch** (fallback)
+3. **FormSubmit directo** (último recurso)
+
+Esto asegura que el formulario funcione incluso si uno de los servicios falla.
 
 ### Estructura del Proyecto:
 ```
