@@ -7,7 +7,7 @@ let scrollPosition = 0;
 
 // Configuración de EmailJS
 const FORMSPREE_CONFIG = {
-    endpoint: 'https://formspree.io/f/xdkogkvo', // Endpoint de Formspree para cotiza@davidfortin.me
+    endpoint: 'https://formspree.io/f/mrblaqyl', // Endpoint de Formspree para cotiza@davidfortin.me
     method: 'POST'
 };
 
