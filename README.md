@@ -4,7 +4,7 @@ Sitio web profesional para David Fortín, presentador de TV, modelo y arquitecto
 
 ## Configuración del Formulario de Contacto
 
-El sitio utiliza **FormSubmit** para el envío de emails. Los mensajes se envían directamente a `cotiza@davidfortin.me`.
+El sitio utiliza **Formspree** para el envío de emails. Los mensajes se envían directamente a `cotiza@davidfortin.me`.
 
 ### Características del Formulario:
 - ✅ Envío real de emails a cotiza@davidfortin.me
@@ -20,38 +20,21 @@ El sitio utiliza **FormSubmit** para el envío de emails. Los mensajes se envía
 
 ### Servicios de Email Configurados:
 
-#### 1. FormSubmit (Activo)
-- **Servicio**: https://formsubmit.co/
+#### Formspree (Activo)
+- **Servicio**: https://formspree.io/
 - **Destino**: cotiza@davidfortin.me
-- **Configuración**: Sin registro requerido
+- **Endpoint**: https://formspree.io/f/xdkogkvo
 - **Características**: 
-  - Envío directo
-  - Sin captcha
-  - Formato de tabla HTML
+  - Envío confiable y rápido
+  - Validación automática
+  - Respuestas JSON para mejor manejo de errores
+  - Sin problemas de CORS
+  - Protección anti-spam integrada
 
-#### 2. EmailJS (Alternativo)
-Para configurar EmailJS como alternativa:
+### Configuración de Formspree:
+El formulario está configurado para usar el endpoint `https://formspree.io/f/xdkogkvo` que está asociado con `cotiza@davidfortin.me`. 
 
-1. Crear cuenta en [EmailJS](https://www.emailjs.com/)
-2. Configurar servicio de email
-3. Crear template de email
-4. Obtener claves públicas
-5. Actualizar `EMAILJS_CONFIG` en `scripts/main.js`:
-   ```javascript
-   const EMAILJS_CONFIG = {
-       serviceId: 'tu_service_id',
-       templateId: 'tu_template_id',
-       publicKey: 'tu_public_key'
-   };
-   ```
-
-#### 3. Configuración de Múltiples Métodos
-El sistema ahora utiliza múltiples métodos de envío:
-1. **EmailJS** (método principal si está configurado)
-2. **FormSubmit con fetch** (fallback)
-3. **FormSubmit directo** (último recurso)
-
-Esto asegura que el formulario funcione incluso si uno de los servicios falla.
+Si necesitas cambiar el email de destino, simplemente actualiza el endpoint en `FORMSPREE_CONFIG` en `scripts/main.js`.
 
 ### Estructura del Proyecto:
 ```
@@ -79,7 +62,7 @@ Esto asegura que el formulario funcione incluso si uno de los servicios falla.
 - HTML5 semántico
 - CSS3 con variables personalizadas
 - JavaScript vanilla (ES6+)
-- FormSubmit para envío de emails
+- Formspree para envío de emails
 - Google Fonts (Inter + Playfair Display)
 
 ### Instalación y Uso:
